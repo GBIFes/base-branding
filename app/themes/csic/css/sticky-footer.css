@@ -1,0 +1,28 @@
+/* Sticky footer styles
+   https://stackoverflow.com/a/27864663
+   -------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 400px !important;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+/*  height: 60px; */
+}
+
+.footer .text-muted {
+/*   color: #808080; */
+}
+
+body,html {
+  height: auto !important;
+}

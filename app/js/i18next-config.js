@@ -25,9 +25,8 @@ const i18nOpts = {
   backend: backOpts,
   //  lng: 'es',
   fallbackLng: {
-    zh: ['en'],
-    "sw-TZ": ['en'],
-    default: ['en']
+    "es-ES": ['es'],
+    default: ['es']
   },
   sendMissingTo: 'fallback',
   interpolation: {

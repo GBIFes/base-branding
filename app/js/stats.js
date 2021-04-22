@@ -38,18 +38,18 @@ var getStats = (url, callback) => {
 // If you want to show collections stats:
 // `${collectory}/ws/dataResource/count`
 var loadStats = () => {
-  getStats(`${biocacheService}/occurrences`, (data) => {
-    setCounter('stats_occurrences', data.totalRecords, () =>
-      getStats(`${collectory}/ws/dataResource/count`, (data) => {
-        setCounter('stats_datasets', data.total, () =>
-          getStats(`${collectory}/ws/institution/count`, (data) => {
-            setCounter('stats_institutions', data.total);
-          })
-        )
-      })
+  getStats(`${biocacheService}/occurrences/search?q=data_hub_uid:dh6`, (data) => {
+    setCounter('stats_occurrences', data.totalRecords, () => {}
+      /* getStats(`${collectory}/ws/dataResource/count`, (data) => {
+       *   setCounter('stats_datasets', data.total, () =>
+       *     getStats(`${collectory}/ws/institution/count`, (data) => {
+       *       setCounter('stats_institutions', data.total);
+       *     })
+       *   )
+       * }) */
     )});
   // Right now this is slow so we put here
-  getStats(`${biocacheService}/occurrence/facets?q=*:*&facets=species&pageSize=0`, (data) => {
+  getStats(`${biocacheService}/occurrence/facets?q=data_hub_uid:dh6&facets=species&pageSize=0`, (data) => {
     setCounter("stats_species", data[0].count);
   });
 }

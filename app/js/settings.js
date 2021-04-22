@@ -1,5 +1,5 @@
 module.exports = {
-  isDevel: true,
+  isDevel: false,
   inMante: false,
   enabledLangs: ['en', 'es', 'ca'],
   mainDomain: 'gbif.es', // used for cookies (lang, and index)

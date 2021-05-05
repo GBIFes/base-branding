@@ -1,0 +1,32 @@
+/* .home .list-group-item {
+  position: relative;
+  background-color: #6a0423;
+  background-size: cover;
+} */
+
+.home .list-group-item {
+  height: 100px;
+}
+
+/*
+a > #stats_occurrences,
+a > #stats_species,
+.home .list-group-item h4 {
+  color: white;
+}
+a:hover > #stats_occurrences,
+a:hover > #stats_species,
+a:hover .list-group-item h4 {
+  color: #6a0423;
+}
+
+.home .list-group-item::before {
+  content: '';
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  background-color: rgba(255, 255, 255, 0.45);
+}
+*/

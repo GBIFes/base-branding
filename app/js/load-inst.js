@@ -1,14 +1,34 @@
 var settings = require('./settings');
 
-var collectory = settings.services.collectory.url;
-var biocache = settings.services.biocache.url;
+const collectory = settings.services.collectory.url;
+const biocache = settings.services.biocache.url;
+
+function compareStrings(a, b) {
+  // Assuming you want case-insensitive comparison
+  a = a.toLowerCase();
+  b = b.toLowerCase();
+
+  return a < b ? -1 : a > b ? 1 : 0;
+}
 
 var loadInst = () => {
   $.getJSON(`${collectory}/ws/dataHub/dh6`, function (data) {
     var html = '';
     html += `<br><h3>Instituciones</h3><br>`;
-    $.each(data['memberInstitutions'], function (key, value) {
+    let inst = data['memberInstitutions'];
+    let instS = inst.sort(function (a, b) {
+      return compareStrings(a.name, b.name);
+    });
+    console.log(instS);
+
+    $.ajaxSetup({
+      async: false,
+    });
+
+    $.each(instS, function (key, value) {
       let iid = value['uid'];
+
+      // let data = await getInst(iid);
       $.getJSON(`${collectory}/ws/institution/${iid}`, function (data) {
         html += '<div class="panel panel-default">';
         html += `<div class="panel-heading" role="tab" id="heading-${iid}">`;
@@ -45,9 +65,12 @@ var loadInst = () => {
         html += '</div>';
         html += '</div>';
         html += '</div>';
-        $('#accordion-home-institutions').html(html);
       });
     });
+    $('#accordion-home-institutions').html(html);
+  });
+  $.ajaxSetup({
+    async: true,
   });
 };
 

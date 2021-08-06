@@ -14,7 +14,7 @@ function compareStrings(a, b) {
 var loadInst = () => {
   $.getJSON(`${collectory}/ws/dataHub/dh6`, function (data) {
     var html = '';
-    html += `<br><h3>Instituciones</h3><br>`;
+    html += `<br><h3 data-i18n="index.stats.institutions"></h3><br>`;
     let inst = data['memberInstitutions'];
     let instS = inst.sort(function (a, b) {
       return compareStrings(a.name, b.name);
@@ -52,12 +52,12 @@ var loadInst = () => {
         html += `  aria-labelledby="heading-${iid}"`;
         html += '>';
         html += '  <div class="panel-body">';
-        html += `<h4>Colecciones</h4>`;
+        html += `<h4 data-i18n="index.stats.collections"></h4>`;
         $.each(data['collections'], function (key, val) {
           // console.log(val);
           html += `<p><a href="${biocache}/occurrences/search?q=collection_uid%3A${val.uid}">${val.name}</a></p>`;
         });
-        html += `<h4>Juegos de Datos</h4>`;
+        html += `<h4 data-i18n="index.stats.datasets"></h4>`;
         $.each(data['linkedRecordProviders'], function (key, val) {
           // console.log(val);
           html += `<p><a href="${biocache}/occurrences/search?q=data_resource_uid%3A${val.uid}">${val.name}</a></p>`;
@@ -68,6 +68,7 @@ var loadInst = () => {
       });
     });
     $('#accordion-home-institutions').html(html);
+    $("body").localize();
   });
   $.ajaxSetup({
     async: true,

@@ -6,6 +6,7 @@
   "dependencies": {
     "countup.js": "2.0.3",
     "domurl": "^2.3.0",
+    "highcharts": "^9.1.2",
     "i18next": "^19.1.0",
     "i18next-browser-languagedetector": "^4.0.1",
     "i18next-http-backend": "^1.0.21",

@@ -53,15 +53,20 @@ var loadInst = () => {
         html += '>';
         html += '  <div class="panel-body">';
         html += `<h4 data-i18n="index.stats.collections"></h4>`;
-        $.each(data['collections'], function (key, val) {
-          // console.log(val);
-          html += `<p><a href="${biocache}/occurrences/search?q=collection_uid%3A${val.uid}">${val.name}</a></p>`;
-        });
-        html += `<h4 data-i18n="index.stats.datasets"></h4>`;
-        $.each(data['linkedRecordProviders'], function (key, val) {
-          // console.log(val);
-          html += `<p><a href="${biocache}/occurrences/search?q=data_resource_uid%3A${val.uid}">${val.name}</a></p>`;
-        });
+         $.each(data['collections'], function (key, val) {
+            // console.log(val);
+            html += '<ul id="filtered-list" style="padding-left:15px">';
+            html += `<li style="list-style: disc !important"><a href="${biocache}/occurrences/search?q=collection_uid%3A${val.uid}">${val.name}</a></li>`;
+            $.getJSON(`${collectory}/ws/collection/${val.uid}`, function (data) {
+              html += '<ul id="filtered-list" style="padding-left:30px;">';
+              $.each(data['linkedRecordProviders'], function (key, val) {
+                // console.log(val);
+                html += `<li style="list-style: circle;"><a href="${biocache}/occurrences/search?q=data_resource_uid%3A${val.uid}">${val.name}</a></li>`;
+              });
+              html += '</ul>';
+              });
+              html += '</ul>';
+         });
         html += '</div>';
         html += '</div>';
         html += '</div>';

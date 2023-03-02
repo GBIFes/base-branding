@@ -1,6 +1,7 @@
 const Highcharts = require('highcharts');
 const drilldown = require('highcharts/modules/drilldown');
 const settings = require('./settings');
+const i18n = require('i18next');
 
 const biocache = settings.services.biocache.url;
 const biocacheService = settings.isDevel
@@ -126,8 +127,8 @@ document.addEventListener('DOMContentLoaded', function () {
           },
           credits: false,
           title: {
-            text: 'Taxonomía',
-            style: { fontSize: '22px', fontWeight: 500 },
+            text: i18n.t('index.stats.taxonomies'),
+              style: { fontSize: '22px', fontWeight: 500 },
           },
           xAxis: {
             type: 'category',
@@ -167,8 +168,8 @@ document.addEventListener('DOMContentLoaded', function () {
           var i = 0;
 
           chart.myButton = chart.renderer
-            .button('Registros', 50, 350)
-            .attr({
+                                .button(i18n.t('index.stats.records'), 50, 350)
+                                .attr({
               zIndex: 3,
             })
             .on('click', function () {

@@ -62,7 +62,12 @@ exports.plugins = {
       _LOCALES_URL: process.env.NODE_ENV === 'development' ? 'http://localhost:3333': settings.baseFooterUrl
     }
   },
-  babel: {presets: ['latest']},
+
+  babel: {
+      presets: ['latest'],
+      plugins: ['transform-runtime'],
+    },
+    'babel-polyfill': {},
   copycat: {
     // just copy ALA default builded files to our build
     // These are loaded by ala-bootstrap3 library, so we need to load manually in our development testPage

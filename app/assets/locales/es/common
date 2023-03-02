@@ -21,6 +21,8 @@
   "index.stats.datasets": "Juego de datos",
   "index.stats.institutions": "Institutos",
   "index.stats.collections": "Colecciones",
+  "index.stats.taxonomies": "Taxonomías",
+  "index.stats.records": "Registros",
   "index.stats.species": "Especies",
   "index.regions": "Regiones",
   "error.title": "¡Uuppps, vaya!",

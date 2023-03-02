@@ -21,6 +21,8 @@
   "index.stats.datasets": "Conjunts de dades",
   "index.stats.institutions": "Instituts",
   "index.stats.collections": "Col·leccions",
+  "index.stats.taxonomies": "Taxonomies",
+  "index.stats.records": "Registres",
   "index.stats.species": "Especies",
   "index.regions": "Regions",
   "error.title": "Ops!",

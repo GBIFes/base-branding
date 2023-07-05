@@ -7,6 +7,7 @@ const biocache = settings.services.biocache.url;
 const biocacheService = settings.isDevel
                       ? 'https://biocache-ws.ala.org.au/ws/'
                       : settings.services.biocacheService.url;
+const dh = settings.dataHub;
 
 drilldown(Highcharts);
 
@@ -30,7 +31,7 @@ var pieColors = (function () {
 
 document.addEventListener('DOMContentLoaded', function () {
   $.getJSON(
-    `${biocacheService}/occurrence/facets?q=data_hub_uid:dh6&facets=institution_name&pageSize=0`,
+    `${biocacheService}/occurrence/facets?q=data_hub_uid:${dh}&facets=institution_name&pageSize=0`,
     (callback) => {
       var data = [];
       // var drilldowns = {};

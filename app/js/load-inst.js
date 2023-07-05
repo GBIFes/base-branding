@@ -4,6 +4,7 @@ var settings = require('./settings');
 
 const collectory = settings.services.collectory.url;
 const biocache = settings.services.biocache.url;
+var dh = settings.dataHub;
 
 function compareStrings(a, b) {
   // Assuming you want case-insensitive comparison
@@ -15,7 +16,7 @@ function compareStrings(a, b) {
 
 let icol = {};
 var loadInst = () => {
-  $.getJSON(`${collectory}/ws/dataHub/dh6`, function (data) {
+  $.getJSON(`${collectory}/ws/dataHub/${dh}`, function (data) {
     var html = '';
     html += `<br><h3 data-i18n="index.stats.institutions"></h3><br>`;
     let inst = data['memberInstitutions'];

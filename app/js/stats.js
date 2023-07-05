@@ -4,6 +4,7 @@ var { CountUp } = require('countup.js');
 
 var collectory = settings.services.collectory.url;
 var biocacheService = settings.services.biocacheService.url;
+var dh = settings.dataHub;
 
 var setCounter = (id, val, onEnd) => {
   const options = {
@@ -42,7 +43,7 @@ var getStats = (url, callback) => {
 // `${collectory}/ws/dataResource/count`
 var loadStats = () => {
   getStats(
-    `${biocacheService}/occurrences/search?q=data_hub_uid:dh6`,
+    `${biocacheService}/occurrences/search?q=data_hub_uid:${dh}`,
     (data) => {
       setCounter(
         'stats_occurrences',
@@ -60,7 +61,7 @@ var loadStats = () => {
   );
   // Right now this is slow so we put here
   getStats(
-    `${biocacheService}/occurrence/facets?q=data_hub_uid:dh6&facets=species&pageSize=0`,
+    `${biocacheService}/occurrence/facets?q=data_hub_uid:${dh}&facets=species&pageSize=0`,
     (data) => {
       setCounter('stats_species', data[0].count);
     }

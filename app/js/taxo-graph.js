@@ -7,6 +7,7 @@ const biocache = settings.services.biocache.url;
 const biocacheService = settings.isDevel
   ? 'https://biocache-ws.ala.org.au/ws/'
   : settings.services.biocacheService.url;
+const dh = settings.dataHub;
 
 drilldown(Highcharts);
 
@@ -51,7 +52,7 @@ let currentName = '';
 
 document.addEventListener('DOMContentLoaded', function () {
   $.getJSON(
-    `${biocacheService}/breakdown.json?q=data_hub_uid:dh6&fq=rank:(species%20OR%20subspecies)&rank=kingdom`,
+    `${biocacheService}/breakdown.json?q=data_hub_uid:${dh}&fq=rank:(species%20OR%20subspecies)&rank=kingdom`,
     (callback) => {
       var data = [];
       // var drilldowns = {};
@@ -94,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     chart.showLoading('Cargando ...');
 
                     $.getJSON(
-                      `${biocacheService}/breakdown.json?q=data_hub_uid:dh6&name=${
+                      `${biocacheService}/breakdown.json?q=data_hub_uid:${dh}&name=${
                         e.point.name
                       }&fq=rank:(species%20OR%20subspecies)&rank=${
                         ranks[e.point.rank]

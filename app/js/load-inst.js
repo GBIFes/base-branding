@@ -19,9 +19,19 @@ var loadInst = () => {
     var html = '';
     html += `<br><h3 data-i18n="index.stats.institutions"></h3><br>`;
     let inst = data['memberInstitutions'];
+    let colMembers = data['memberCollections'];
+    let drMembers = data['memberDataResources'];
+
     let instS = inst.sort(function (a, b) {
       return compareStrings(a.name, b.name);
     });
+    let colMembersS = colMembers.sort(function (a, b) {
+      return compareStrings(a.name, b.name);
+    });
+    let drMembersS = drMembers.sort(function (a, b) {
+      return compareStrings(a.name, b.name);
+    });
+
     $.ajaxSetup({
       async: false,
     });
@@ -56,14 +66,15 @@ var loadInst = () => {
           html += '  <div class="panel-body">';
           html += `<h4 data-i18n="index.stats.collections"></h4>`;
           html += `<span id="inst-content-${iid}"></span>`;
-          icol[iid] = data['collections'];
+          // Filter only col in
+          icol[iid] = data['collections'].filter(itemA => colMembersS.some(itemB => itemB.uid === itemA.uid));
+
           html += '</div>';
           html += '</div>';
           html += '</div>';
         });
     });
     $('#accordion-home-institutions').html(html);
-    $("body").localize();
     $.ajaxSetup({
       async: true,
     });
@@ -76,9 +87,9 @@ var loadInst = () => {
         cohtml += `<span id="col-content-${val.uid}"></span>`;
         let drhtml = '';
         $.getJSON(`${collectory}/ws/collection/${val.uid}`, function (data) {
-
+          let drs = data['linkedRecordProviders'].filter(itemA => drMembersS.some(itemB => itemB.uid === itemA.uid));
           drhtml += '<ul id="filtered-list" style="padding-left:30px;">';
-          $.each(data['linkedRecordProviders'], function (drkey, drval) {
+          $.each(drs, function (drkey, drval) {
             // console.log(val);
             drhtml += `<li style="list-style: circle;"><a href="${biocache}/occurrences/search?q=data_resource_uid%3A${drval.uid}">${drval.name}</a></li>`;
           });
@@ -89,6 +100,7 @@ var loadInst = () => {
         $(`#inst-content-${inst}`).html(cohtml);
       });
     }
+    $("body").localize();
   });
 };
 

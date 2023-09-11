@@ -15,8 +15,8 @@ Highcharts.setOptions({
   lang: {
     loading: 'Cargando...',
     drillUpText: '◁ Volver a {series.name}',
-    thousandsSep: ',',
-    decimalPoint: '.',
+    thousandsSep: '.',
+    decimalPoint: ',',
   },
 });
 
@@ -148,6 +148,8 @@ document.addEventListener('DOMContentLoaded', function () {
               borderWidth: 0,
               dataLabels: {
                 enabled: true,
+                distance: 40, // ajusta este valor para cambiar la distancia de las etiquetas
+                //format: '{point.name}: {point.y}', // esto mostrará el nombre y el valor
               },
             },
           },

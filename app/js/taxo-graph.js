@@ -23,7 +23,7 @@ Highcharts.setOptions({
 // Make monochrome colors
 var pieColors = (function () {
   var colors = [],
-    base = Highcharts.getOptions().colors[3], // '#36de97',
+    base = Highcharts.getOptions().colors[2], // '#36de97',
     i;
 
   for (i = 0; i < 10; i += 1) {

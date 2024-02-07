@@ -144,7 +144,7 @@ exports.plugins = {
   // instead of auto-reload-brunch and just `brunch watch`
   // We can return to auto-reload in the future
   browserSync: {
-    port: 3333,
+    port: 3334,
     // logLevel: "debug"
     // Don't open a browser tab on each modification (this was working in another browser-sync plugin)
     // open: false

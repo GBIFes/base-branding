@@ -7,6 +7,7 @@ module.exports = {
   baseFooterUrl: 'https://colecciones-botanicas.gbif.es/brand-2023',
   theme: 'yeti',
   dataHub: 'dh8',
+  dataHubToFlag: 'dh9',
   services: {
     collectory: { url: 'https://colecciones.gbif.es', title: 'Collections' },
     biocache: { url: 'https://colecciones-botanicas.gbif.es/registros', title: 'Occurrence records' },

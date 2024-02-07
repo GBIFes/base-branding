@@ -5,6 +5,7 @@ var settings = require('./settings');
 const collectory = settings.services.collectory.url;
 const biocache = settings.services.biocache.url;
 var dh = settings.dataHub;
+var dhToFlag = settings.dataHubToFlag;
 
 function compareStrings(a, b) {
   // Assuming you want case-insensitive comparison
@@ -16,6 +17,23 @@ function compareStrings(a, b) {
 
 let icol = {};
 var loadInst = () => {
+
+  let instToFlag;
+  let colToFlag;
+  let drToFlag;
+  $.getJSON(`${collectory}/ws/dataHub/${dhToFlag}`, function (dataToFlag) {
+    instToFlag = $.map(dataToFlag.memberInstitutions, function(institution) {
+      return institution.uid;
+    });
+
+    colToFlag = $.map(dataToFlag.memberCollections, function(collection) {
+      return collection.uid;
+    });
+
+    drToFlag = $.map(dataToFlag.memberDataResources, function(resource) {
+      return resource.uid;
+    });
+
   $.getJSON(`${collectory}/ws/dataHub/${dh}`, function (data) {
     var html = '';
     html += `<br><h3 data-i18n="index.stats.institutions"></h3><br>`;
@@ -37,8 +55,10 @@ var loadInst = () => {
       async: false,
     });
 
+
     $.each(instS, function (key, value) {
       let iid = value['uid'];
+      let flag = $.inArray(iid, instToFlag) !== -1;
 
       if (iid != 'in99')
         // let data = await getInst(iid);
@@ -55,6 +75,9 @@ var loadInst = () => {
           html += `      aria-controls="collapse-${iid}"`;
           html += '    >';
           html += `      ${value['name']}`;
+          if (flag) {
+            html += ' <a href="https://ahim.org" target="_blank"><img src="images/flag.png" title="Miembro de la AHIM" alt="Miembro de la AHIM" style="height: 24px"></a>';
+          }
           html += '    </a>';
           html += '  </h4>';
           html += '</div>';
@@ -75,6 +98,8 @@ var loadInst = () => {
           html += '</div>';
         });
     });
+
+
     $('#accordion-home-institutions').html(html);
     $.ajaxSetup({
       async: true,
@@ -102,6 +127,7 @@ var loadInst = () => {
       });
     }
     $("body").localize();
+  });
   });
 };
 

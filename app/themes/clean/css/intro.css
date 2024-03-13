@@ -1,0 +1,58 @@
+nav.navbar.navbar-default {
+  margin-bottom: 0px !important;
+}
+
+.hero-section {
+  background: url('/images/hero.jpeg') no-repeat center center;
+  background-size: cover;
+  height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-top: 0; /* Quita el margen superior si lo hay */
+  margin-top: 0; /* Asegúrate de que no hay margen en la parte superior del hero */
+}
+
+.hero-section h1 {
+  color: #FFF;
+  font-size: 8rem;
+  text-transform: uppercase;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Añade un sutil overlay oscuro detrás del texto para mejorar la legibilidad */
+  display: inline; /* Asegura que el background solo rodee el texto */
+  padding: 10px 20px; /* Añade un poco de padding alrededor del texto */
+}
+
+/* Ajustes para una pantalla más pequeña */
+@media (max-width: 768px) {
+  .hero-section h1 {
+    font-size: 4rem; /* Ajusta el tamaño para dispositivos móviles */
+  }
+}
+
+#main_content > div.container-fluid > div.equal-heights {
+  padding: 15px 0px 40px 0px;
+}
+
+/* Ajustes para el contenedor de la intro */
+.intro-text-container {
+  padding: 20px 40px;
+}
+
+/* Ajustes para la imagen de la intro para asegurar la consistencia en la altura */
+.intro-image-container {
+  background-size: cover;
+  background-position: center;
+  height: 100%; /* Asegúrate de que la imagen cubra la altura del contenedor */
+}
+
+/* Manten la altura igualada para los contenedores de la intro */
+@media (min-width: 992px) {
+  .equal-heights .intro-image-container,
+  .equal-heights .intro-text-container {
+    min-height: 450px; /* Altura mínima para grandes dispositivos */
+  }
+}

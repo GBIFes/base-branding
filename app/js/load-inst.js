@@ -109,7 +109,7 @@ var loadInst = () => {
       let cohtml = '';
       $.each(icol[inst], function (key, val) {
         cohtml += '<ul id="filtered-list" style="padding-left:15px">';
-        cohtml += `<li style="list-style: disc !important"><a href="${biocache}/occurrences/search?q=collection_uid%3A${val.uid}">${val.name}</a></li>`;
+        cohtml += `<li style="list-style: disc !important"><a href="${biocache}/occurrences/search?q=collection_uid%3A${val.uid}#tab_mapView">${val.name}</a></li>`;
         cohtml += `<span id="col-content-${val.uid}"></span>`;
         let drhtml = '';
         $.getJSON(`${collectory}/ws/collection/${val.uid}`, function (data) {
@@ -117,7 +117,7 @@ var loadInst = () => {
           drhtml += '<ul id="filtered-list" style="padding-left:30px;">';
           $.each(drs, function (drkey, drval) {
             // console.log(val);
-            drhtml += `<li style="list-style: circle;"><a href="${biocache}/occurrences/search?q=data_resource_uid%3A${drval.uid}">${drval.name}</a></li>`;
+            drhtml += `<li style="list-style: circle;"><a href="${biocache}/occurrences/search?q=data_resource_uid%3A${drval.uid}#tab_mapView">${drval.name}</a></li>`;
           });
           drhtml += '</ul>';
           $(`#col-content-${val.uid}`).html(drhtml);

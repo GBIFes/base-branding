@@ -31,13 +31,14 @@ var pieColors = (function () {
 
 document.addEventListener('DOMContentLoaded', function () {
   $.getJSON(
-    `${biocacheService}/occurrence/facets?q=data_hub_uid:${dh}&facets=institution_name&pageSize=0`,
+    `${biocacheService}/occurrence/facets?q=data_hub_uid:${dh}&facets=institution_uid&pageSize=0`,
     (callback) => {
       var data = [];
       // var drilldowns = {};
       for (var x in callback[0].fieldResult) {
         data.push({
           name: callback[0].fieldResult[x].label,
+          fq: callback[0].fieldResult[x].fq,
           rank: 0,
           y: callback[0].fieldResult[x].count,
           drilldown: true,
@@ -59,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 drilldown: function (e) {
                   window
                     .open(
-                      `${biocache}/occurrences/search?fq=institution_name%3A"${e.point.name}"`,
+                      `${biocache}/occurrences/search?fq=${e.point.fq}`,
                       '_blank'
                     )
                     .focus();
@@ -69,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
           point: {
             events: {
               click: function () {
-                window.open( `${biocache}/occurrences/search?fq=institution_name%3A"${e.point.name}"`);
+                window.open( `${biocache}/occurrences/search?fq=${e.point.fq}`);
               }
             }
           },

@@ -101,6 +101,34 @@ i18n.on('languageChanged', function (lng) {
 });
 
 (function($) {
+
+// Helper function to wait for condition (prevents race conditions)
+function waitForCondition(conditionFn, description, timeoutMs = 5000) {
+  return new Promise((resolve, reject) => {
+    const startTime = Date.now();
+    
+    function check() {
+      try {
+        if (conditionFn()) {
+          resolve();
+          return;
+        }
+      } catch (e) {
+        // Condition check failed, keep polling
+      }
+      
+      if (Date.now() - startTime > timeoutMs) {
+        reject(new Error(`Timeout waiting for ${description} after ${timeoutMs}ms`));
+        return;
+      }
+      
+      setTimeout(check, 10); // Poll every 10ms
+    }
+    
+    check();
+  });
+}
+
 i18n.use(backend)
     .use(lngDetector)
     .use(cache)
@@ -113,48 +141,70 @@ i18n.use(backend)
       console.log(`Language initialized: ${i18n.language}`);
       jqueryI18next.init(i18n, $, { i18nName: 'i18next' } );
       console.log('jquery i18next initialized');
-      $("body").localize();
+      
+      // Wait for both DOM ready AND jquery-i18next plugin availability
+      // This prevents race condition: "localize is not a function"
+      Promise.all([
+        // 1. Wait for DOM to be fully loaded
+        new Promise(resolve => {
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', resolve);
+          } else {
+            resolve();
+          }
+        }),
+        // 2. Wait for localize() method to be available on jQuery
+        waitForCondition(
+          () => typeof $.fn.localize === 'function',
+          'jquery-i18next localize() plugin'
+        )
+      ]).then(() => {
+        console.log('DOM ready and localize available, localizing body');
+        $("body").localize();
 
-      $('.locale-link').on('click', function(e) {
-        e.preventDefault();
-        const lang = $(this).data('locale');
-        console.log(`Lang clicked ${lang}`);
+        $('.locale-link').on('click', function(e) {
+          e.preventDefault();
+          const lang = $(this).data('locale');
+          console.log(`Lang clicked ${lang}`);
 
-        i18n.changeLanguage(lang);
+          i18n.changeLanguage(lang);
 
-        // Change ?lang param and reload
-        currentUrl.query.lang = lang;
-        document.location.search = currentUrl.query;
+          // Change ?lang param and reload
+          currentUrl.query.lang = lang;
+          document.location.search = currentUrl.query;
+        });
+        // used in clean theme
+        if( $('#dropdown-lang').length ) {
+          $('#dropdown-lang').find('.dropdown-toggle').html(i18n.language + ' <span class="caret"></span>');
+        }
+
+        if (typeof Cookies.get(laSessionCookie) === 'undefined' && typeof currentUrl.query.lang === 'undefined') {
+          // Workaround to set grails locale
+          // This will use to do a unique lang redirect (to force grails to set the lang for the session)
+          var in30Minutes = 1/48;
+          // grails default session lifetime is 30min
+          Cookies.set(laSessionCookie, '/', { expires: in30Minutes });
+          currentUrl.query.lang = i18n.language;
+          document.location.search = currentUrl.query;
+        }
+
+        // cookies eu consent
+        /* const cookiesOpt = {
+         *   cookieTitle: t('Uso de Cookies'),
+         *   cookieMessage: t('Utilizamos cookies para asegurar un mejor uso de nuestra web. Si continúas navegando, consideramos que aceptas su uso'),
+         *   showLink: false,
+         *   position: 'bottom',
+         *   linkText: 'Lee más',
+         *   linkRouteName: '/privacy',
+         *   acceptButtonText: t('Aceptar'),
+         *   html: false,
+         *   expirationInDays: 70,
+         *   forceShow: false
+         * };
+         */
+        // CookieConsent.init(cookiesOpt);
+      }).catch(err => {
+        console.error('Error waiting for DOM/localize:', err);
       });
-      // used in clean theme
-      if( $('#dropdown-lang').length ) {
-        $('#dropdown-lang').find('.dropdown-toggle').html(i18n.language + ' <span class="caret"></span>');
-      }
-
-      if (typeof Cookies.get(laSessionCookie) === 'undefined' && typeof currentUrl.query.lang === 'undefined') {
-        // Workaround to set grails locale
-        // This will use to do a unique lang redirect (to force grails to set the lang for the session)
-        var in30Minutes = 1/48;
-        // grails default session lifetime is 30min
-        Cookies.set(laSessionCookie, '/', { expires: in30Minutes });
-        currentUrl.query.lang = i18n.language;
-        document.location.search = currentUrl.query;
-      }
-
-      // cookies eu consent
-      /* const cookiesOpt = {
-       *   cookieTitle: t('Uso de Cookies'),
-       *   cookieMessage: t('Utilizamos cookies para asegurar un mejor uso de nuestra web. Si continúas navegando, consideramos que aceptas su uso'),
-       *   showLink: false,
-       *   position: 'bottom',
-       *   linkText: 'Lee más',
-       *   linkRouteName: '/privacy',
-       *   acceptButtonText: t('Aceptar'),
-       *   html: false,
-       *   expirationInDays: 70,
-       *   forceShow: false
-       * };
-       */
-      // CookieConsent.init(cookiesOpt);
     });
 }(jQuery));

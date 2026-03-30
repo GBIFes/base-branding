@@ -5,7 +5,7 @@ module.exports = {
   mainDomain: 'gbif.es', // used for cookies (lang, and index)
   mainLAUrl: 'https://colecciones-botanicas.gbif.es',
   baseFooterUrl: 'https://colecciones-botanicas.gbif.es/brand-2023',
-  theme: 'yeti',
+  theme: 'material',
   dataHub: 'dh8',
   dataHubToFlag: 'dh9',
   services: {

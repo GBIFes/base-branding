@@ -67,7 +67,7 @@ var loadInst = () => {
           html += `<h4 data-i18n="index.stats.collections"></h4>`;
           html += `<span id="inst-content-${iid}"></span>`;
           // Filter only col in
-          icol[iid] = data['collections'].filter(itemA => colMembersS.some(itemB => itemB.uid === itemA.uid));
+          icol[iid] = (data['collections'] || []).filter(itemA => colMembersS.some(itemB => itemB.uid === itemA.uid));
 
           html += '</div>';
           html += '</div>';
@@ -87,7 +87,7 @@ var loadInst = () => {
         cohtml += `<span id="col-content-${val.uid}"></span>`;
         let drhtml = '';
         $.getJSON(`${collectory}/ws/collection/${val.uid}`, function (data) {
-          let drs = data['linkedRecordProviders'].filter(itemA => drMembersS.some(itemB => itemB.uid === itemA.uid));
+          let drs = (data['linkedRecordProviders'] || []).filter(itemA => drMembersS.some(itemB => itemB.uid === itemA.uid));
           drhtml += '<ul id="filtered-list" style="padding-left:30px;">';
           $.each(drs, function (drkey, drval) {
             // console.log(val);

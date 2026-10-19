@@ -106,30 +106,31 @@ There is a experimental branch `vite` that uses [vitejs](https://vitejs.dev/) in
 
 ALA no longer commits the `build/` of `commonui-bs3-2019` / `commonui-bs5-2019`, so we build them with their own gulp:
 `scripts/build-bs3.mjs` runs before `npm run dev` and `npm run build`, and `scripts/build-bs5.mjs` during `npm run build`.
-Both use `scripts/build-commonui.mjs`, which rebuilds only when the submodule commit or the `buildvars` (from `settings.js`) change,
-and installs with the lockfiles in `scripts/locks/` (upstream has none, and bs3's `yarn.lock` is broken).
+Both use `scripts/build-commonui.mjs`, which:
 
-To update one of them:
+- **puts the submodules at the commit this repo pins** (`git submodule update --init --recursive`) when they are
+  missing or at another commit, so after a `git pull` you only need `npm run build`. Set `COMMONUI_SYNC=0` to skip it;
+- rebuilds only when the submodule commit or the `buildvars` (from `settings.js`) change;
+- installs with the lockfiles in `scripts/locks/` (upstream has none, and bs3's `yarn.lock` is broken),
+  and leaves the submodule clean afterwards.
+
+To update one of them to a newer ALA commit, `git add` it before building (otherwise the build puts it back to the pinned one):
 
 ```
 git -C commonui-bs3-2019 fetch && git -C commonui-bs3-2019 checkout origin/master
-git -C commonui-bs3-2019 submodule update --init --recursive
+git add commonui-bs3-2019
 npm run build   # if package.json changed upstream, `npm ci` fails: refresh scripts/locks/<submodule>.package-lock.json
 ```
-
-`buildvars.js` is generated in the submodules (`ignore = dirty` in `.gitmodules` keeps `git status` clean).
 
 ### Usage
 
 ```
-# First use:
-
-git clone --recurse-submodule https://github.com/living-atlases/base-branding.git
-# if you cloned without the submodules: git submodule update --init --recursive # use --init only the fist time
-
+git clone https://github.com/living-atlases/base-branding.git
 npm install
+npm run dev     # also fetches and builds the ALA bs3 submodule (bs5: on npm run build)
 
-npm run dev
+# later updates
+git pull && npm run build
 ```
 
 Test with:

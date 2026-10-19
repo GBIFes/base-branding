@@ -7,34 +7,22 @@
 // Publish dist/ and point those apps to https://<host>/<branding>/bs5 (headerAndFooter.baseURL).
 import fs from 'fs';
 import path from 'path';
-import { execSync } from 'child_process';
+import { fileURLToPath } from 'url';
 import settings from '../app/js/settings.js';
+import { buildCommonui } from './build-commonui.mjs';
 
-const root = path.resolve(import.meta.dirname, '..');
-const bs5Dir = path.join(root, 'commonui-bs5-2019');
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const out = path.join(root, 'dist', 'bs5');
 const baseUrl = (process.env.BASE_BRANDING_URL || settings.baseFooterUrl).replace(/\/+$/, '');
 const buildTimestamp = Date.now();
 
 // 1. Build the ALA Bootstrap 5 base (git submodule) if needed
-if (!fs.existsSync(path.join(bs5Dir, 'build', 'css', 'bootstrap.min.css'))) {
-  if (!fs.existsSync(path.join(bs5Dir, 'source'))) {
-    throw new Error('commonui-bs5-2019 submodule missing: git submodule update --init');
-  }
-  const vars = {
-    homeDomain: settings.mainLAUrl,
-    signUpURL: `${settings.services.cas.url}/userdetails/registration/createAccount`,
-    profileURL: `${settings.services.cas.url}/userdetails/myprofile`,
-    fathomID: ''
-  };
-  fs.writeFileSync(path.join(bs5Dir, 'buildvars.js'), `module.exports = ${JSON.stringify(vars, null, 2)};\n`);
-  execSync('npm install --no-audit --no-fund && npx gulp', { cwd: bs5Dir, stdio: 'inherit' });
-}
+const bs5Build = buildCommonui('commonui-bs5-2019', 'build', 'commonui-bs5-2019.package-lock.json');
 
 // 2. Static resources of the base
 fs.rmSync(out, { recursive: true, force: true });
 for (const d of ['css', 'js', 'fonts']) {
-  fs.cpSync(path.join(bs5Dir, 'build', d), path.join(out, d), { recursive: true });
+  fs.cpSync(path.join(bs5Build, d), path.join(out, d), { recursive: true });
 }
 fs.copyFileSync(path.join(root, 'app/bs5/branding-bs5.css'), path.join(out, 'css/branding-bs5.css'));
 // Apache: .mustache has no content type by default and the app (Java URLConnection) refuses it

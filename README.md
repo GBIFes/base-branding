@@ -102,6 +102,23 @@ This is using https://vite.dev instead of gulp and using [ALA commonui-bs3-2019]
 
 There is a experimental branch `vite` that uses [vitejs](https://vitejs.dev/) instead.
 
+### ALA commonui submodules
+
+ALA no longer commits the `build/` of `commonui-bs3-2019` / `commonui-bs5-2019`, so we build them with their own gulp:
+`scripts/build-bs3.mjs` runs before `npm run dev` and `npm run build`, and `scripts/build-bs5.mjs` during `npm run build`.
+Both use `scripts/build-commonui.mjs`, which rebuilds only when the submodule commit or the `buildvars` (from `settings.js`) change,
+and installs with the lockfiles in `scripts/locks/` (upstream has none, and bs3's `yarn.lock` is broken).
+
+To update one of them:
+
+```
+git -C commonui-bs3-2019 fetch && git -C commonui-bs3-2019 checkout origin/master
+git -C commonui-bs3-2019 submodule update --init --recursive
+npm run build   # if package.json changed upstream, `npm ci` fails: refresh scripts/locks/<submodule>.package-lock.json
+```
+
+`buildvars.js` is generated in the submodules (`ignore = dirty` in `.gitmodules` keeps `git status` clean).
+
 ### Usage
 
 ```

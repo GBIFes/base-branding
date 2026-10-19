@@ -11,10 +11,21 @@
         "vite.config.js",
         "vite-plugin-multi-replace.js",
         "scripts/build-bs5.mjs",
+        "scripts/build-bs3.mjs",
+        "scripts/build-commonui.mjs",
+        "scripts/locks/*.json",
         "package.json",
         "package-lock.json"
       ],
       "run": "npm run build"
+    },
+    {
+      "match": [
+        "app/js/init.js",
+        ".gitmodules",
+        ".andon/checks.json"
+      ],
+      "run": "npm run build && grep -q 'fathom' dist/js/init.js && grep -q 'fathom.trackEvent' dist/js/application.js"
     }
   ]
 }

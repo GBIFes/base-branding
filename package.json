@@ -11,9 +11,11 @@
     "prebuild": "node scripts/build-bs3.mjs",
     "build": "cross-env BASE_BRANDING_URL=https://l-a.site vite build && cross-env BASE_BRANDING_URL=https://l-a.site BUILD_INIT=1 vite build && npm run build:bs5",
     "preview": "BASE_BRANDING_URL=http://localhost:3333 vite preview",
-    "build:bs5": "cross-env BASE_BRANDING_URL=https://l-a.site node scripts/build-bs5.mjs"
+    "build:bs5": "cross-env BASE_BRANDING_URL=https://l-a.site node scripts/build-bs5.mjs",
+    "test:e2e": "playwright test"
   },
   "devDependencies": {
+    "@playwright/test": "^1.56.1",
     "@rollup/plugin-replace": "^5.0.5",
     "cross-env": "^10.0.0",
     "eslint": "^9.26.0",

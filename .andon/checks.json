@@ -3,7 +3,8 @@
   "ignore": [
     "**/*.md",
     "dist/**",
-    "screenshots/**"
+    "screenshots/**",
+    ".gitignore"
   ],
   "rules": [
     {
@@ -15,9 +16,12 @@
         "scripts/build-commonui.mjs",
         "scripts/locks/*.json",
         "package.json",
-        "package-lock.json"
+        "package-lock.json",
+        "playwright.config.js",
+        "tests/e2e/**",
+        "app/themes/*/assets/banner.html"
       ],
-      "run": "npm run build"
+      "run": "npm run build && npm run test:e2e"
     },
     {
       "match": [

@@ -22,8 +22,11 @@ const buildTimestamp = Date.now();
 //
 // Build outputs
 // ─────────────
-//  dist/banner.html  ← injectInitToBody()       prepends css/init.css + js/init.js
+//  dist/banner.html  ← injectInitToBody()       prepends js/jquery-fallback.js + css/init.css + js/init.js
 //                    ← injectThemeCssLinks()     prepends theme CSS <link> tags
+//
+//  dist/js/jquery-fallback.js ← emitJqueryFallback(): jQuery + Bootstrap 3 JS, each guarded
+//                       so it only runs when the page lacks it (see "CAS has no jQuery")
 //
 //  dist/head.html    ← intentionally empty of init (CAS never fetches it)
 //
@@ -41,10 +44,24 @@ const buildTimestamp = Date.now();
 //          no crossorigin attribute → loads cross-origin from the skin host without
 //          CORS headers, matching how ala-brunch delivered the script.
 //
-// Why `defer` on the injected <script>
-// ─────────────────────────────────────
-//  The CAS Thymeleaf layout loads jQuery via webjars with `defer`. Our init.js must
-//  also defer so that jQuery is available when init.js executes (avoids $ is not defined).
+// CAS has no jQuery
+// ─────────────────
+//  ala-cas-5's layout.html loads jQuery through the message keys #{webjars.jquerymin.js},
+//  jqueryui, jquerycookie and headmin. CAS 5.3 defined them (cas-server-core-web); CAS 6 does
+//  not and ala-cas-5 has them commented out, so the page gets src="webjars.jquerymin.js" (404)
+//  and no jQuery at all: its Bootstrap JS, its inline $() scripts and our init.js (jquery-i18next)
+//  all fail. That is why the brunch banner broke too after the CAS 6 upgrade.
+//  So banner.html first loads js/jquery-fallback.js: a classic, parser-blocking script (it has
+//  to run before the CAS inline scripts that follow the banner) that defines jQuery and
+//  Bootstrap only on that CAS symptom (a literal webjars.jquerymin.js script src) and only when
+//  missing. Other ALA/LA apps, and CAS once ala-cas-5 restores the keys, get a no-op, so their
+//  jQuery instance, plugins and late-loaded Bootstrap are kept.
+//  tests/e2e/cas-login.spec.js reproduces the CAS page to check both cases.
+//
+// Why `defer` on the injected init <script>
+// ──────────────────────────────────────────
+//  init.js runs after parsing, once the page's own (or the fallback) jQuery and Bootstrap and the
+//  deferred commonui application.js are in place.
 //
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -177,12 +194,13 @@ function injectInitToBody() {
         const cssSrc = prod ? `${baseUrl}/css/init.css?v=${buildTimestamp}` : null;
         const attrs = prod ? { src, defer: true } : { type: 'module', src };
         const cssTag = cssSrc ? `<link rel="stylesheet" href="${cssSrc}">` : '';
+        const fallbackTag = `<script src="${baseUrl}/js/jquery-fallback.js?v=${buildTimestamp}"></script>`;
         const scriptTag = prod
           ? `<script src="${src}" defer></script>`
           : `<script type="module" src="${src}"></script>`;
 
         if (isBannerFragment) {
-          return cssTag + '\n' + scriptTag + '\n' + html;
+          return fallbackTag + '\n' + cssTag + '\n' + scriptTag + '\n' + html;
         }
         // Dev: inject into body-prepend of full pages
         return { html, tags: [{ tag: 'script', attrs, injectTo: 'body-prepend' }] };
@@ -273,6 +291,34 @@ function generateSpatialLayout() {
   };
 }
 
+// Emit dist/js/jquery-fallback.js, loaded first by banner.html (see "CAS has no jQuery").
+// The commonui jQuery and Bootstrap 3 builds are wrapped in guards so they only run on pages
+// that lack them. A plain synchronous file (not injected markup) also works on slow connections.
+function emitJqueryFallback() {
+  const vendor = 'commonui-bs3-2019/build/js';
+  return {
+    name: 'emit-jquery-fallback',
+    apply: 'build',
+    closeBundle() {
+      if (process.env.BUILD_INIT) return; // only the main pass
+      const read = f => fs.readFileSync(path.resolve(__dirname, vendor, f), 'utf8');
+      // Only on the CAS 6 symptom (the literal message key as script src, already parsed in <head>):
+      // other apps may load jQuery/Bootstrap after the banner and must not get a second copy.
+      const js = [
+        '/* Loaded by banner.html: jQuery and Bootstrap 3 JS for CAS 6 pages, which lack them. */',
+        'if (document.querySelector(\'script[src$="webjars.jquerymin.js"]\')) {',
+        'if (!window.jQuery) {', read('jquery.min.js'), '}',
+        'if (window.jQuery && !window.jQuery.fn.collapse) {', read('bootstrap.min.js'), '}',
+        '}',
+        ''
+      ].join('\n');
+      const outDir = path.resolve(__dirname, 'dist/js');
+      fs.mkdirSync(outDir, { recursive: true });
+      fs.writeFileSync(path.join(outDir, 'jquery-fallback.js'), js);
+    }
+  };
+}
+
 // Dev-only: full-reload the preview when the Spatial skin sources change. The header CSS is
 // served by vite-plugin-static-copy (outside Vite's module graph, so no automatic HMR); this
 // watches app/spatial/** and reloads so testPageSpatial.html reflects edits live.
@@ -341,6 +387,7 @@ const mainConfig = defineConfig({
     injectInitToBody(),
     injectThemeCssLinks(themeAssets),
     generateSpatialLayout(),
+    emitJqueryFallback(),
     hotReloadSpatial(),
     jscc({ values: { _LOCALES_URL: baseUrl, _DEBUG: 1 } }),
     VitePluginRadar({ analytics: { id: settings.analytics.googleId } }),

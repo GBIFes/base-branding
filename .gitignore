@@ -3,3 +3,5 @@ node_modules
 public
 dist
 .claude
+test-results
+playwright-report

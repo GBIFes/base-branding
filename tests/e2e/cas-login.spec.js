@@ -82,7 +82,15 @@ async function openCasLogin(page, { webjarKeys = 'missing', lateBootstrap = fals
   });
 
   await page.goto(`${CAS}/cas/login`);
+  await settle(page);
   return errors;
+}
+
+// On a first visit i18next-config.js reloads once with ?lang=<lng> (to set the grails locale);
+// wait for it so assertions don't race that navigation.
+async function settle(page) {
+  await page.waitForURL(/[?&]lang=/, { timeout: 10000 }).catch(() => {});
+  await page.waitForLoadState('load');
 }
 
 const jqueryErrors = errors => errors.filter(e => /\$ is not defined|jQuery is not defined|requires jQuery/.test(e));
@@ -127,6 +135,7 @@ test('deployed auth.l-a.site login has working branding', async ({ page }) => {
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
   await page.goto('https://auth.l-a.site/cas/login');
+  await settle(page);
   await expectBrandingWorks(page);
   expect(jqueryErrors(errors)).toEqual([]);
 });

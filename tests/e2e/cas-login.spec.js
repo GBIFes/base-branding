@@ -99,8 +99,10 @@ async function expectBrandingWorks(page) {
   await expect(page.locator('[data-i18n^="nav."]').first()).not.toBeEmpty();
   expect(await page.evaluate(() => typeof window.jQuery)).toBe('function');
   // Bootstrap dropdowns need jQuery + bootstrap.js (the CAS head copy fails without jQuery).
-  await page.locator('#dropdown-lang .dropdown-toggle').click();
-  await expect(page.locator('#dropdown-lang')).toHaveClass(/open/);
+  // The language menu when the theme shows it (single-language hubs hide it), else any navbar menu.
+  const dropdown = page.locator('#dropdown-lang:visible, .navbar .dropdown:visible').first();
+  await dropdown.locator('.dropdown-toggle').first().click();
+  await expect(dropdown).toHaveClass(/open/);
 }
 
 test('CAS 6 without webjars.* keys: the banner still gets jQuery, i18n and dropdowns', async ({ page }) => {

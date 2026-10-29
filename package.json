@@ -9,9 +9,9 @@
     "predev": "node scripts/build-bs3.mjs",
     "dev": "cross-env BASE_BRANDING_URL=http://localhost:3333 vite",
     "prebuild": "node scripts/build-bs3.mjs",
-    "build": "cross-env BASE_BRANDING_URL=https://l-a.site vite build && cross-env BASE_BRANDING_URL=https://l-a.site BUILD_INIT=1 vite build && npm run build:bs5",
+    "build": "cross-env BASE_BRANDING_URL=https://colecciones-marinas.gbif.es/brand-2023 vite build && cross-env BASE_BRANDING_URL=https://colecciones-marinas.gbif.es/brand-2023 BUILD_INIT=1 vite build && npm run build:bs5",
     "preview": "BASE_BRANDING_URL=http://localhost:3333 vite preview",
-    "build:bs5": "cross-env BASE_BRANDING_URL=https://l-a.site node scripts/build-bs5.mjs",
+    "build:bs5": "cross-env BASE_BRANDING_URL=https://colecciones-marinas.gbif.es/brand-2023 node scripts/build-bs5.mjs",
     "test:e2e": "playwright test"
   },
   "devDependencies": {

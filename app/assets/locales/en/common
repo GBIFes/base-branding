@@ -1,5 +1,5 @@
 {
-  "general.orgfullname": "ATLAS OF LIVING WAKANDA",
+  "general.orgfullname": "Biodiversity Collections and Databases at the CSIC",
   "nav.collectory": "Collections",
   "nav.biocache": "Occurrences",
   "nav.datasets": "Datasets",
@@ -15,11 +15,11 @@
   "nav.images": "Images",
   "nav.spatial": "Spatial Portal",
   "nav.searchbox": "Search species, datasets, and more...",
-  "index.slogan": "Free National Biodiversity Data Supporting our Environmental Actions",
+  "index.slogan": "",
   "index.search-btn": "Search",
   "index.stats.occurrences": "Occurrences",
   "index.stats.datasets": "Datasets",
-  "index.stats.institutions": "Institutions",
+  "index.stats.institutions": "Institutes",
   "index.stats.species": "Species",
   "error.title": "Ops!",
   "error.subtitle": "We are experiencing some problems in our services",
@@ -27,5 +27,9 @@
   "error.button": "Go to our homepage",
   "cookie_message": "We use cookies to ensure that we give you the best experience on our website. If you continue to use this site we will assume that you are happy with it.",
   "cookie_accept_btn": "OK",
-  "cookie_policy_btn": "Cookies policy"
+  "cookie_policy_btn": "Cookies policy",
+  "index.stats.collections": "Collections",
+  "index.stats.taxonomies": "Taxonomies",
+  "index.stats.records": "Records",
+  "index.regions": "Regions"
 }

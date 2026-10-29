@@ -1,0 +1,138 @@
+/*! CSS Used from: Embedded */
+/*! @import https://www.csic.es/modules/system/system.base.css?qbcxwo */
+.clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden;}
+/*! end @import */
+/*! CSS Used from: Embedded */
+/*! @import https://www.csic.es/sites/all/themes/csic/css/bootstrap.min.css?qbcxwo */
+footer,section{display:block;}
+a{background-color:transparent;}
+a:active,a:hover{outline:0;}
+small{font-size:80%;}
+img{border:0;}
+hr{height:0;-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box;}
+@media print{
+*,:after,:before{color:#000!important;text-shadow:none!important;background:0 0!important;-webkit-box-shadow:none!important;box-shadow:none!important;}
+a,a:visited{text-decoration:underline;}
+a[href]:after{content:" (" attr(href) ")";}
+img{page-break-inside:avoid;}
+img{max-width:100%!important;}
+p{orphans:3;widows:3;}
+}
+*{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;}
+:after,:before{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;}
+a{color:#337ab7;text-decoration:none;}
+a:focus,a:hover{color:#23527c;text-decoration:underline;}
+a:focus{outline:thin dotted;outline:5px auto -webkit-focus-ring-color;outline-offset:-2px;}
+img{vertical-align:middle;}
+.img-responsive{display:block;max-width:100%;height:auto;}
+hr{margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #eee;}
+p{margin:0 0 10px;}
+small{font-size:85%;}
+.text-center{text-align:center;}
+ul{margin-top:0;margin-bottom:10px;}
+.container{padding-right:15px;padding-left:15px;margin-right:auto;margin-left:auto;}
+@media (min-width:768px){
+.container{width:750px;}
+}
+@media (min-width:992px){
+.container{width:970px;}
+}
+@media (min-width:1200px){
+.container{width:1170px;}
+}
+.row{margin-right:-15px;margin-left:-15px;}
+.col-lg-12,.col-lg-4,.col-lg-8,.col-md-12,.col-md-4,.col-md-5,.col-md-8,.col-sm-12{position:relative;min-height:1px;padding-right:15px;padding-left:15px;}
+@media (min-width:768px){
+.col-sm-12{float:left;}
+.col-sm-12{width:100%;}
+}
+@media (min-width:992px){
+.col-md-12,.col-md-4,.col-md-5,.col-md-8{float:left;}
+.col-md-12{width:100%;}
+.col-md-8{width:66.66666667%;}
+.col-md-5{width:41.66666667%;}
+.col-md-4{width:33.33333333%;}
+}
+@media (min-width:1200px){
+.col-lg-12,.col-lg-4,.col-lg-8{float:left;}
+.col-lg-12{width:100%;}
+.col-lg-8{width:66.66666667%;}
+.col-lg-4{width:33.33333333%;}
+}
+.clearfix:after,.clearfix:before,.container:after,.container:before,.row:after,.row:before{display:table;content:" ";}
+.clearfix:after,.container:after,.row:after{clear:both;}
+.center-block{display:block;margin-right:auto;margin-left:auto;}
+/*! end @import */
+/*! @import https://www.csic.es/sites/all/themes/csic/css/plugins-css.css?qbcxwo */
+.owl-carousel{display:none;width:100%;-webkit-tap-highlight-color:transparent;position:relative;z-index:1;}
+.owl-carousel .owl-stage{position:relative;-ms-touch-action:pan-Y;}
+.owl-carousel .owl-stage:after{content:".";display:block;clear:both;visibility:hidden;line-height:0;height:0;}
+.owl-carousel .owl-stage-outer{position:relative;overflow:hidden;-webkit-transform:translate3d(0px, 0px, 0px);}
+.owl-carousel .owl-controls .owl-nav .owl-prev,.owl-carousel .owl-controls .owl-nav .owl-next{-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;}
+.owl-carousel.owl-loaded{display:block;}
+.owl-carousel .owl-item{position:relative;min-height:1px;float:left;-webkit-backface-visibility:hidden;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;}
+.owl-carousel .owl-item img{-webkit-transform-style:preserve-3d;}
+.owl-carousel .owl-item img{transform-style:preserve-3d;}
+/*! end @import */
+/*! @import https://www.csic.es/sites/all/themes/csic/css/shortcodes.css?qbcxwo */
+.owl-carousel .owl-item img{width:100%;}
+.owl-theme .owl-controls{text-align:center;margin-top:20px;}
+.owl-theme .owl-controls .owl-nav [class*="owl-"]{background:#d6d6d6;border-radius:3px;color:#fff;cursor:pointer;display:inline-block;font-size:14px;margin:5px;padding:4px 7px;}
+/*! end @import */
+/*! @import https://www.csic.es/sites/all/themes/csic/css/default.css?qbcxwo */
+a{-webkit-transition:all 0.3s ease-out 0s;-moz-transition:all 0.3s ease-out 0s;-ms-transition:all 0.3s ease-out 0s;-o-transition:all 0.3s ease-out 0s;transition:all 0.3s ease-out 0s;}
+a:focus{text-decoration:none!important;}
+a:focus,a:hover{color:#af071f;text-decoration:none!important;}
+a{outline:medium none!important;color:#af071f;}
+ul{margin:0px;padding:0px;}
+li{list-style:none;}
+p{font-size:14px;font-weight:normal;line-height:24px;color:#626262;}
+hr{margin:60px 0;padding:0px;border-bottom:1px dashed #bcbdbe;border-top:0px;}
+*::-moz-selection{background:#029fcc;color:#fff;text-shadow:none;}
+::-moz-selection{background:#029fcc;color:#fff;text-shadow:none;}
+::selection{background:#029fcc;color:#fff;text-shadow:none;}
+.mt-20{margin-top:20px!important;}
+.mb-10{margin-bottom:10px!important;}
+.pt-10{padding-top:10px!important;}
+.pt-60{padding-top:60px!important;}
+/*! end @import */
+/*! @import https://www.csic.es/sites/all/themes/csic/css/style.css?qbcxwo */
+.feature-8-info{display:table-cell;vertical-align:top;}
+.owl-carousel-10 .owl-nav{display:block;position:absolute;text-indent:inherit;left:0;width:100%;cursor:pointer;top:4px;}
+.owl-carousel-10 .owl-item{cursor:url("https://www.csic.es/sites/all/themes/csic/images/client-arrow.png") 25 25, pointer;padding:0 15px;}
+.owl-carousel .owl-item img{transform-style:inherit;}
+.footer{background:#191919;}
+.footer-useful-link.footer-hedding ul{margin-top:-6px;}
+.footer-useful-link ul li{list-style:none;}
+.footer-useful-link ul li a{color:#fff;font-size:14px;vertical-align:top;display:block;line-height:26px;}
+.footer-useful-link ul li a:hover{color:#af071f;}
+.footer-widget{background:#0f0f0f;padding:20px 15px;}
+/*! end @import */
+/*! @import https://www.csic.es/sites/all/themes/csic/css/responsive.css?qbcxwo */
+@media (max-width: 1272px){
+.footer .footer-useful-link{margin-top:30px;}
+}
+@media (max-width: 1025px){
+.footer-useful-link{margin-top:30px;}
+}
+@media only screen and (min-width: 768px) and (max-width: 999px){
+.container{width:96%;}
+}
+@media ( max-width:992px){
+.footer-widget{text-align:center;}
+}
+@media ( max-width:479px){
+.footer-widget{text-align:center;}
+.footer-widget p{margin-bottom:10px;}
+}
+/*! end @import */
+/*! @import https://www.csic.es/sites/all/themes/csic/css/custom.css?qbcxwo */
+.footer-useful-link li{float:left;}
+.footer-useful-link ul li a{color:#fff;font-size:16px;vertical-align:top;display:block;line-height:26px;padding-right:5px;}
+.owl-carousel .owl-item img{width:auto;}
+small{font-size:82%;}
+.footer-useful-link.footer-hedding li.leaf{border-right:1px solid #fff;margin-right:7px;}
+.footer-useful-link.footer-hedding li.leaf a{padding-top:0px!important;padding-bottom:0px!important;}
+p{text-align:justify;}
+p.copyright{color:#fff;}
+p.copyright{color:#fff;}

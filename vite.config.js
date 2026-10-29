@@ -210,8 +210,10 @@ function injectInitToBody() {
 }
 
 function injectThemeCssLinks(theme) {
-  const themePath = `app/themes/${theme}/css/*.css`;
-  const files = globSync(themePath, { onlyFiles: true });
+  // Bootswatch themes (cleanBased) are the clean theme plus their own bootstrap.min.css, which
+  // has to come after the clean CSS, as the brunch build concatenated them.
+  const themeDirs = cleanBased ? ['clean', settings.theme] : [theme];
+  const files = themeDirs.flatMap(dir => globSync(`app/themes/${dir}/css/*.css`, { onlyFiles: true }).sort());
 
   return {
     name: 'inject-theme-css-links',
@@ -342,6 +344,7 @@ const copyCommands = [
   { src: 'commonui-bs3-2019/build/fonts/*', dest: 'fonts' },
   { src: 'app/assets/*', dest: '' },
   { src: `app/themes/${themeAssets}`, dest: 'app/themes/' },
+  ...(cleanBased ? [{ src: `app/themes/${theme}`, dest: 'app/themes/' }] : []),
   { src: 'app/assets/images/*', dest: 'images' },
   { src: 'app/assets/locales/*', dest: 'locales' }
 ];

@@ -42,7 +42,8 @@ const i18nOpts = {
       return value;
     }
   },
-  whitelist: settings.enabledLangs,
+  whitelist: settings.enabledLangs, // i18next < 21
+  supportedLngs: settings.enabledLangs,
   load: 'languageOnly', // 'es' o 'en', previously: 'all', // es-ES -> es, en-US -> en
   debug: true,
   ns: 'common',

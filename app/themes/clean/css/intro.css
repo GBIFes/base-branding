@@ -1,0 +1,96 @@
+nav.navbar.navbar-default {
+  margin-bottom: 0px !important;
+}
+
+.hero-section {
+  position: relative;
+  background: url('/images/hero3.jpeg') no-repeat center center;
+  background-size: cover;
+  height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+.hero-section h1 {
+  color: #FFF;
+  font-size: 8rem;
+  text-transform: uppercase;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: inline;
+  padding: 10px 20px;
+}
+
+@media (max-width: 768px) {
+  .hero-section h1 {
+    font-size: 4rem;
+  }
+}
+
+#main_content > div.container-fluid > div.equal-heights {
+  padding: 15px 0px 40px 0px;
+}
+
+/* Ajustes para el contenedor de la intro */
+.intro-text-container {
+  padding: 20px 40px;
+  background-color: rgba(245, 245, 220, 0.6);
+}
+
+@media (min-width: 992px) {
+  .equal-heights .intro-image-container,
+  .equal-heights .intro-text-container {
+    min-height: 150px;
+  }
+}
+
+.col-md-12.intro-text {
+  padding-right: 0px !important;
+  padding-left: 0px !important;
+}
+
+.row.equal-heights {
+  padding-top: 0px !important;
+}
+
+.img-caption {
+  line-height: 1.42857142857;
+  font-size: 12px;
+  position: absolute;
+  padding: 5px 10px 0;
+  color: #fff;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  max-width: calc(100% - 40px);
+  box-sizing: border-box;
+}
+
+.img-caption > a {
+  color: #FFF;
+  text-decoration: underline;
+}
+
+.img-caption > a:hover {
+  color: #003399;
+}
+
+.img-caption:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+
+@media (max-width: 768px) {
+  .img-caption {
+    font-size: 12px; /* Texto más pequeño para dispositivos móviles */
+    padding: 5px; /* Menos padding en dispositivos móviles */
+    max-width: calc(100% - 20px); /* Ajuste de ancho para móviles */
+  }
+}

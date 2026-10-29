@@ -6,7 +6,7 @@ import './stats.js';
 import './load-inst.js';
 import './taxo-graph.js';
 import './inst-graph.js';
-import './autocomplete-conf.js';
+// import './autocomplete-conf.js'; // off in this hub, as in its brunch branch
 import 'url-polyfill'; // for URL() usage in older browsers
 
 // ALA's commonui application.js (bs3 and bs5) calls fathom.trackEvent() on BIE tab clicks without

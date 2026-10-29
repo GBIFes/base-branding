@@ -1,53 +1,123 @@
-    <!-- main content -->
-    <div id="main_content" class="la-content container">
-      <a name="top"></a>
-      
-      <div class="jumbotron">
-        <h1 data-i18n="general.orgfullname"></h1>
-        <p data-i18n="index.slogan"></p>
-      </div>
+<!-- main content -->
+<div id="main_content" class="la-content la-container">
+  <a name="top"></a>
 
-      <div class="row">
-        <div class="col-md-6">
-          <div class="list-group">
-            <a href="::biocacheURL::" class="list-group-item">
-              <h4 class="list-group-item-heading" data-i18n="index.stats.occurrences"></h4>
-              <p class="list-group-item-text" id="stats_occurrences"></p>
-            </a>
-          </div>
-          <div class="list-group">
-            <a href="::datasetsURL::" class="list-group-item">
-              <h4 class="list-group-item-heading" data-i18n="index.stats.datasets"></h4>
-              <p class="list-group-item-text" id="stats_datasets"></p>
-            </a>
-          </div>
+<div class="hero-section" style="background-image: url('images/hero3.jpeg');">
+  <h1>Colecciones Botánicas</h1>
+  <div class="img-caption">
+    Acer monspessulanum (L.) <a href="https://colecciones-botanicas.gbif.es/registros/occurrences/1ae530bc-7c54-4c3d-9d6f-7965b3afd14a?lang=es">recolectado en</a> Cigoitia, Alava, España. Vía Herbario de la Facultad de Ciencias Biológicas de la Universidad Complutense de Madrid (MACB) (<a href="http://creativecommons.org/licenses/by-nc/4.0/">CC BY NC 4.0</a>)
+  </div>
+</div>
+  <div class="container-fluid">
+  <div class="row equal-heights">
+    <div class="col-md-12 intro-text">
+      <div class="intro-text-container">
+        <div class="container">
+        <h2>Bienvenido al Herbario Virtual de las colecciones botánicas españolas</h2>
+        <p>
+          Este portal producto de la colaboración entre la <a href="https://www.ahim.org/">AHIM</a> (Asociación de Herbarios Ibero-macaronésicos) y <a href="https://www.gbif.es/">GBIF.ES</a> (Nodo de GBIF en España), te permite explorar los ejemplares digitalizados de las colecciones de manera sencilla y unificada. Esta iniciativa se presenta como una contribución a la construcción de <a href="https://www.dissco.eu/">DiSSCo</a> (Distributed System of Scientific Collections) y a la articulación de su comunidad en España.
+          DiSSCo es una nueva infraestructura de investigación europea para la conservación física y digital de colecciones europeas de ciencias naturales bajo políticas comunes de gestión y acceso para que las colecciones sean más visibles y utilizadas.
+        </p>
+        <p>
+          Las instituciones miembro de la AHIM están identificadas en la lista con el logo de la asociación <img src="images/flag.png" title="Miembro de la AHIM" alt="Miembro de la AHIM" style="height: 24px">.
+        </p>
         </div>
-        <div class="col-md-6">
-          <div class="list-group">
-            <a href="::collectoryURL::" class="list-group-item">
-              <h4 class="list-group-item-heading" data-i18n="index.stats.institutions"></h4>
-              <p class="list-group-item-text" id="stats_institutions"></p>
-            </a>
-          </div>
-          <div class="list-group">
-            <a href="::bieURL::" class="list-group-item">
-              <h4 class="list-group-item-heading" data-i18n="index.stats.species"></h4>
-              <p class="list-group-item-text" id="stats_species"></p>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="list-group">
-        <form method="get" action="::searchServer::::searchPath::" class="search-form" id="main_biosearch_form" action="#">
-          <div class="input-group">
-            <div class="form-group is-empty">
-              <input data-i18n="[placeholder]nav.searchbox" id="search" class="form-control ac_input general-search ui-autocomplete-input" name="q" type="text"  autocomplete="off">
-            </div>
-            <span id="main_biosearch_label" class="input-group-btn">
-              <div class="form-group"><input data-i18n="[value]index.search-btn" type="submit" class="form-control btn btn-raised btn-primary" alt="Search" value=""></div>
-            </span>
-          </div>
-        </form>
       </div>
     </div>
+  </div>
+</div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="home col-md-6">
+      <div class="list-group">
+        <a href="::biocacheURL::" class="list-group-item">
+          <h4
+            class="list-group-item-heading"
+            data-i18n="index.stats.occurrences"
+          ></h4>
+          <p class="list-group-item-text loader" id="stats_occurrences"></p>
+        </a>
+      </div>
+    </div>
+    <div class="home col-md-6">
+      <div class="list-group">
+        <a href="::bieURL::" class="list-group-item">
+          <h4
+            class="list-group-item-heading"
+            data-i18n="index.stats.species"
+          ></h4>
+          <p class="list-group-item-text loader" id="stats_species"></p>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="home col-md-6">
+      <div class="list-group">
+        <a href="::regionsURL::" class="list-group-item">
+          <h4 class="list-group-item-heading" data-i18n="index.regions"></h4>
+        </a>
+      </div>
+    </div>
+    <div class="home col-md-6">
+      <div class="list-group"></div>
+    </div>
+  </div>
+  <div class="list-group">
+    <form
+      method="get"
+      action="::searchServer::::searchPath::"
+      class="search-form"
+      id="main_biosearch_form"
+      action="#"
+    >
+      <div class="input-group">
+        <div class="form-group is-empty">
+          <input
+            data-i18n="[placeholder]nav.searchbox"
+            id="search"
+            class="form-control ac_input general-search ui-autocomplete-input"
+            name="q"
+            type="text"
+            autocomplete="off"
+          />
+        </div>
+        <span id="main_biosearch_label" class="input-group-btn">
+          <div class="form-group">
+            <input
+              data-i18n="[value]index.search-btn"
+              type="submit"
+              class="form-control btn btn-raised btn-primary"
+              alt="Search"
+              value=""
+            />
+          </div>
+        </span>
+      </div>
+    </form>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <!-- Institutions Links -->
+      <div
+        class="col-sm-6 panel-group"
+        id="accordion-home-institutions"
+        role="tablist"
+        aria-multiselectable="true"
+      >
+        <br />
+        <br />
+        <div class="loader"></div>
+      </div>
+      <div class="col-sm-6">
+        <!-- Pie chart  -->
+        <br />
+        <br />
+        <div id="taxo-container" style="width: 100%; height: 400px;"></div>
+        <div id="inst-container" style="width: 100%; height: 400px;"></div>
+      </div>
+    </div>
+  </div>
+</div>

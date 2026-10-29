@@ -26,9 +26,8 @@ const i18nOpts = {
   backend: backOpts,
   //  lng: 'es',
   fallbackLng: {
-    zh: ['en'],
-    'sw-TZ': ['en'],
-    default: ['en']
+    'es-ES': ['es'],
+    default: ['es']
   },
   sendMissingTo: 'fallback',
   interpolation: {
@@ -143,8 +142,11 @@ i18n.use(backend)
         document.location.search = currentUrl.query;
       }
 
-      mountCookieConsent(`https://l-a.site/${window.i18next.resolvedLanguage || 'en'}/put-your-cookies-page-here/`);
-      console.log('Added cookie consent');
+      // Cookie consent banner, only for portals that set their cookie policy page
+      if (settings.cookiePolicyUrl) {
+        mountCookieConsent(settings.cookiePolicyUrl.replace('{lang}', window.i18next.resolvedLanguage || 'en'));
+        console.log('Added cookie consent');
+      }
 
     });
     window.i18next = i18n;

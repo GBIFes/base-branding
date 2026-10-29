@@ -96,7 +96,7 @@ async function settle(page) {
 const jqueryErrors = errors => errors.filter(e => /\$ is not defined|jQuery is not defined|requires jQuery/.test(e));
 
 async function expectBrandingWorks(page) {
-  await expect(page.locator('[data-i18n="nav.collectory"]').first()).not.toBeEmpty();
+  await expect(page.locator('[data-i18n^="nav."]').first()).not.toBeEmpty();
   expect(await page.evaluate(() => typeof window.jQuery)).toBe('function');
   // Bootstrap dropdowns need jQuery + bootstrap.js (the CAS head copy fails without jQuery).
   await page.locator('#dropdown-lang .dropdown-toggle').click();
@@ -124,7 +124,7 @@ test('CAS that already loads jQuery: the banner keeps that jQuery and its plugin
 
 test('page with jQuery but Bootstrap loaded after the banner: the fallback loads nothing', async ({ page }) => {
   await openCasLogin(page, { webjarKeys: 'fixed', lateBootstrap: true });
-  await expect(page.locator('[data-i18n="nav.collectory"]').first()).not.toBeEmpty();
+  await expect(page.locator('[data-i18n^="nav."]').first()).not.toBeEmpty();
   expect(await page.evaluate(() => window.jQuery === window.__casJQuery)).toBe(true);
   // The page's own (late) Bootstrap is the only one allowed; a second copy breaks dropdowns.
   expect(await page.evaluate(() => typeof window.jQuery.fn.collapse)).toBe('undefined');

@@ -21,6 +21,7 @@ var setCounter = (id, val, onEnd) => {
   }
   options.startVal = Math.round(val - val * 4/100); // we increment only a %
   console.log(`Start val ${options.startVal} to ${val}`);
+  $(`#${id}`).removeClass('loader');
   const countUp = new CountUp(id, val, options);
   if (!countUp.error) {
     countUp.start(() => { $(`#${id}`).addClass('loaded_stats'); if (typeof onEnd !== 'undefined') onEnd(); });
@@ -42,7 +43,21 @@ var getStats = (url, callback) => {
 
 // If you want to show collections stats:
 // `${collectory}/ws/dataResource/count`
+// Data hub home: records and species of the hub only (settings.dataHub)
+var loadHubStats = (dh) => {
+  getStats(`${biocacheService}/occurrences/search?q=data_hub_uid:${dh}`, (data) => {
+    setCounter('stats_occurrences', data.totalRecords);
+  });
+  getStats(`${biocacheService}/occurrence/facets?q=data_hub_uid:${dh}&facets=species&pageSize=0`, (data) => {
+    setCounter('stats_species', data[0].count);
+  });
+};
+
 var loadStats = () => {
+  if (settings.dataHub) {
+    loadHubStats(settings.dataHub);
+    return;
+  }
   getStats(`${biocacheService}/occurrences/search`, (data) => {
     setCounter('stats_occurrences', data.totalRecords, () =>
       getStats(`${collectory}/ws/dataResource/count`, (data) => {

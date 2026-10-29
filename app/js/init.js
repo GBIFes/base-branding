@@ -3,6 +3,9 @@ import './index-auth.js';
 import './i18next-config.js';
 import './mante.js';
 import './stats.js';
+import './load-inst.js';
+import './taxo-graph.js';
+import './inst-graph.js';
 import './autocomplete-conf.js';
 import 'url-polyfill'; // for URL() usage in older browsers
 

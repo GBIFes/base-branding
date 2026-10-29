@@ -390,7 +390,8 @@ const mainConfig = defineConfig({
     emitJqueryFallback(),
     hotReloadSpatial(),
     jscc({ values: { _LOCALES_URL: baseUrl, _DEBUG: 1 } }),
-    VitePluginRadar({ analytics: { id: settings.analytics.googleId } }),
+    // Google Analytics only when the portal sets an id (settings.analytics.googleId)
+    ...(settings.analytics?.googleId ? [VitePluginRadar({ analytics: { id: settings.analytics.googleId } })] : []),
   ],
   build: {
     rollupOptions: {

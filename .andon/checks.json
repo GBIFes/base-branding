@@ -9,6 +9,15 @@
   "rules": [
     {
       "match": [
+        "app/js/init.js",
+        ".gitmodules",
+        ".andon/checks.json"
+      ],
+      "run": "npm run build && grep -q 'fathom' dist/js/init.js && grep -q 'fathom.trackEvent' dist/js/application.js && npm run test:e2e"
+    },
+    {
+      "match": [
+        "app/js/**",
         "vite.config.js",
         "vite-plugin-multi-replace.js",
         "scripts/build-bs5.mjs",
@@ -22,14 +31,6 @@
         "app/themes/*/assets/banner.html"
       ],
       "run": "npm run build && npm run test:e2e"
-    },
-    {
-      "match": [
-        "app/js/init.js",
-        ".gitmodules",
-        ".andon/checks.json"
-      ],
-      "run": "npm run build && grep -q 'fathom' dist/js/init.js && grep -q 'fathom.trackEvent' dist/js/application.js"
     }
   ]
 }

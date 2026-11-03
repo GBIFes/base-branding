@@ -1,6 +1,6 @@
 import i18n from 'i18next';
 import settings from './settings';
-import { Highcharts, biocache, biocacheService, dh, pieColors } from './hub-charts.js';
+import { Highcharts, biocache, biocacheService, dh, pieColors, whenReady } from './hub-charts.js';
 
 // Home page: taxonomic breakdown of the data hub records, drilling down from kingdom to species
 
@@ -8,7 +8,7 @@ const ranks = ['kingdom', 'phylum', 'class', 'order', 'family', 'genus', 'specie
 let currentRank = '';
 let currentName = '';
 
-document.addEventListener('DOMContentLoaded', function () {
+whenReady(function () {
   if (!document.getElementById('taxo-container')) return;
   $.getJSON(
     `${biocacheService}/breakdown.json?q=data_hub_uid:${dh}&fq=rank:(species%20OR%20subspecies)&rank=kingdom`,

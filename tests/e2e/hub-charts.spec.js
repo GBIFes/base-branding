@@ -33,7 +33,15 @@ const KINGDOMS = [
   { label: 'Fungi', count: 1200 },
   { label: 'Chromista', count: 300 }
 ];
-const PHYLA = [{ label: 'Tracheophyta', count: 8000 }, { label: 'Bryophyta', count: 1000 }];
+// Ten, so the drilled pie uses the whole colour ramp: its tail is where a slice used to
+// come out white. The last one dwarfs the rest, as the real nameless buckets do.
+const PHYLA = [
+  { label: 'Tracheophyta', count: 800 }, { label: 'Bryophyta', count: 700 },
+  { label: 'Rhodophyta', count: 600 }, { label: 'Marchantiophyta', count: 500 },
+  { label: 'Chlorophyta', count: 400 }, { label: 'Charophyta', count: 300 },
+  { label: 'Anthocerotophyta', count: 200 }, { label: 'Glaucophyta', count: 100 },
+  { label: 'Prasinodermophyta', count: 50 }, { label: '', count: 9000 }
+];
 const INSTITUTIONS = [
   { label: 'Herbario A', fq: 'institution_uid:in1', count: 5000 },
   { label: 'Herbario B', fq: 'institution_uid:in2', count: 2500 }
@@ -131,6 +139,29 @@ test.describe('the data hub home charts', () => {
     await expect(page.locator('#taxo-container text.highcharts-title')).toContainText(/\S/);
   });
 
+  // i18next fetches its namespace over the network, so a chart drawn on DOMContentLoaded
+  // alone showed the raw key as its title whenever it won that race.
+  test('both titles are translated, never the raw i18n key', async ({ page }) => {
+    await openHubHome(page);
+
+    for (const container of ['taxo-container', 'inst-container']) {
+      const title = page.locator(`#${container} text.highcharts-title`);
+      await expect(title).toContainText(/\S/);
+      await expect(title).not.toContainText('index.stats');
+    }
+  });
+
+  // Highcharts 11 sizes text in em of the chart's font-size, and the hub page's root size
+  // is 10px: without an explicit chart font-size the data labels came out at 7px.
+  test('the data labels are readable, not shrunk by the page root size', async ({ page }) => {
+    await openHubHome(page);
+    await expect(slices(page, 'taxo-container')).toHaveCount(KINGDOMS.length);
+
+    const size = await page.locator('#taxo-container .highcharts-data-labels text').first()
+      .evaluate(e => parseFloat(getComputedStyle(e).fontSize));
+    expect(size, 'the data labels shrank with the page root size').toBeGreaterThanOrEqual(10);
+  });
+
   test('clicking a kingdom drills into it, so the drilldown module is loaded', async ({ page }) => {
     await openHubHome(page);
     await expect(slices(page, 'taxo-container')).toHaveCount(KINGDOMS.length);
@@ -141,6 +172,18 @@ test.describe('the data hub home charts', () => {
 
     // The second level replaced the first one: without the drilldown module the click is a no-op.
     await expect(slices(page, 'taxo-container')).toHaveCount(PHYLA.length);
+
+    // None of them may be white: the page behind is, so such a slice reads as missing.
+    // A guard, not a reproduction: with these stubbed counts the drilled series does not
+    // walk the far end of the colour ramp, which is where marinas lost its biggest slice.
+    // That one was checked on the deployed hub, by reading the slice's fill.
+    const fills = await slices(page, 'taxo-container')
+      .evaluateAll(ps => ps.map(p => p.getAttribute('fill')));
+    const washedOut = fills.filter(fill => {
+      const [r, g, b] = (fill.match(/\d+/g) || []).map(Number);
+      return 0.2126 * r + 0.7152 * g + 0.0722 * b > 240; // as good as white behind it
+    });
+    expect(washedOut, 'a slice is too pale to tell from the page behind it').toEqual([]);
   });
 
   test('the institutions pie renders and a slice opens its records search', async ({ page }) => {

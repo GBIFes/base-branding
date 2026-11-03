@@ -1,10 +1,10 @@
 import i18n from 'i18next';
 import settings from './settings';
-import { Highcharts, biocache, biocacheService, dh, pieColors } from './hub-charts.js';
+import { Highcharts, biocache, biocacheService, dh, pieColors, whenReady } from './hub-charts.js';
 
 // Home page: data hub records by institution; a click opens that institution's records
 
-document.addEventListener('DOMContentLoaded', function () {
+whenReady(function () {
   if (!document.getElementById('inst-container')) return;
   $.getJSON(
     `${biocacheService}/occurrence/facets?q=data_hub_uid:${dh}&facets=institution_uid&pageSize=0`,

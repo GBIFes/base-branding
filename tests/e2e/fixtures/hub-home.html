@@ -10,6 +10,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Hub home</title>
   <link rel="stylesheet" href="HEADER_FOOTER_URL/css/bootstrap.min.css" media="screen,print"/>
+  <!-- The hub pages come from ala-hub with its own Bootstrap 3, whose root size is 10px
+       (checked on colecciones-marinas.gbif.es). Highcharts 11 sizes its labels in em of
+       that, so without this the fixture would not show the shrinking it caused. -->
+  <style>html { font-size: 10px; }</style>
   <script type="text/javascript" src="HEADER_FOOTER_URL/js/jquery.min.js"></script>
 </head>
 <body>

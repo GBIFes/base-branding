@@ -9,9 +9,17 @@ drilldown(Highcharts);
 Highcharts.setOptions({
   lang: {
     loading: 'Cargando...',
-    drillUpText: '◁ Volver a {series.name}',
     thousandsSep: '.',
     decimalPoint: ',',
+  },
+  // The drill-up button lang.drillUpText used to label is gone since 9.3.2: what walks
+  // back up a drilldown now is the breadcrumbs component. showFullPath keeps it to the
+  // single button the old one was, and {level.name} is the level being returned to.
+  drilldown: {
+    breadcrumbs: {
+      showFullPath: false,
+      format: '◁ Volver a {level.name}',
+    },
   },
 });
 

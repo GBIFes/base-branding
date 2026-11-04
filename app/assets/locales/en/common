@@ -82,5 +82,6 @@
   "footer.links.csic": "CSIC",
   "footer.links.gbifes": "GBIF.ES",
   "footer.links.legal": "Legal notice",
-  "footer.links.privacy": "Privacy policy"
+  "footer.links.privacy": "Privacy policy",
+  "general.brandname": "Biodiversity collections"
 }

@@ -102,4 +102,5 @@
 /* A long hub name next to a wide logo still fits a phone header */
 @media (max-width: 480px) {
   .la-header .la-brand { font-size: 15px; }
+  .la-header .la-brand__logo { max-width: 88px; height: 28px; }
 }

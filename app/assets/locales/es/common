@@ -81,5 +81,6 @@
   "index.cards.regions.link": "Ver las regiones",
   "footer.links.gbifes": "GBIF.ES",
   "footer.links.legal": "Aviso legal",
-  "footer.links.privacy": "Política de privacidad"
+  "footer.links.privacy": "Política de privacidad",
+  "general.brandname": "Colecciones marinas"
 }

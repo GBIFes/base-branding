@@ -101,6 +101,19 @@ test.describe('hero', () => {
     expect(pickRendition({ image: 'images/hero.jpg' }, 1280, 640)).toBe('images/hero.jpg');
   });
 
+  test('the hub intro shows its text, and is left out when the locale has none', async ({ page }) => {
+    await openHome(page);
+    const lang = await page.evaluate(() => window.i18next.resolvedLanguage);
+    const texts = JSON.parse(fs.readFileSync(path.join(root, `app/assets/locales/${lang}/common`), 'utf8'));
+    const intro = page.locator('#la-intro');
+    if (texts['index.intro.title']) {
+      await expect(intro).toBeVisible();
+      await expect(intro.locator('.la-intro__text p').first()).not.toBeEmpty();
+    } else {
+      await expect(intro).toBeHidden();
+    }
+  });
+
   test('cards and partners come from settings.home', async ({ page }) => {
     await openHome(page);
     await expect(page.locator('#la-home-cards .la-card')).toHaveCount(home.cards.length);

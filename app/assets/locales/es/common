@@ -77,7 +77,7 @@
   "index.cards.species.text": "Fichas de especies con sus ejemplares, mapas e imágenes.",
   "index.cards.species.link": "Buscar especies",
   "index.cards.regions.title": "Regiones",
-  "index.cards.regions.text": "Los ejemplares por demarcación marina, comunidad autónoma o espacio protegido.",
+  "index.cards.regions.text": "Los ejemplares por comunidad autónoma, provincia o espacio natural protegido.",
   "index.cards.regions.link": "Ver las regiones",
   "footer.links.gbifes": "GBIF.ES",
   "footer.links.legal": "Aviso legal",

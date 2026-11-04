@@ -23,8 +23,7 @@ export default {
       surface: '#f4f1e8', // the band of numbers, card placeholders
       page: '#fbfaf6'
     },
-    font: 'Figtree',
-    headingFont: 'Fraunces',
+    font: 'IBM Plex Sans',
     radius: 4
   },
   home: {

@@ -9,15 +9,6 @@
   "rules": [
     {
       "match": [
-        "app/js/init.js",
-        ".gitmodules",
-        ".andon/checks.json"
-      ],
-      "run": "npm run build && grep -q 'fathom' dist/js/init.js && grep -q 'fathom.trackEvent' dist/js/application.js && npm run test:e2e"
-    },
-    {
-      "match": [
-        "app/js/**",
         "vite.config.js",
         "vite-plugin-multi-replace.js",
         "scripts/build-bs5.mjs",
@@ -28,9 +19,36 @@
         "package-lock.json",
         "playwright.config.js",
         "tests/e2e/**",
-        "app/themes/*/assets/banner.html"
+        "app/themes/*/assets/banner.html",
+        "app/themes/*/assets/*.html",
+        "app/themes/*/css/*.css",
+        "app/bs5/*",
+        "app/js/home/*",
+        "app/js/widgets/*",
+        "app/js/utils/*",
+        "app/js/settings.js",
+        "app/js/footer-bottom.js",
+        "app/assets/locales/*/common",
+        "app/assets/images/*",
+        "index.html",
+        "scripts/branding.mjs",
+        "scripts/screenshots.mjs"
       ],
       "run": "npm run build && npm run test:e2e"
+    },
+    {
+      "match": [
+        "app/js/init.js",
+        ".gitmodules",
+        ".andon/checks.json"
+      ],
+      "run": "npm run build && grep -q 'fathom' dist/js/init.js && grep -q 'fathom.trackEvent' dist/js/application.js"
+    },
+    {
+      "match": [
+        "scripts/demo.mjs"
+      ],
+      "run": "rm -rf /tmp/la-demo-check && DEMO_OUT=/tmp/la-demo-check node scripts/demo.mjs clean && test -f /tmp/la-demo-check/clean/index.html && grep -q 'data-t=\"clean\"' /tmp/la-demo-check/index.html && grep -q 'localhost:4180/clean' /tmp/la-demo-check/clean/banner.html"
     }
   ]
 }

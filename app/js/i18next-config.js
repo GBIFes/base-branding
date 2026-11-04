@@ -26,8 +26,9 @@ const i18nOpts = {
   backend: backOpts,
   //  lng: 'es',
   fallbackLng: {
-    'es-ES': ['es'],
-    default: ['es']
+    zh: ['en'],
+    'sw-TZ': ['en'],
+    default: ['en']
   },
   sendMissingTo: 'fallback',
   interpolation: {
@@ -42,7 +43,8 @@ const i18nOpts = {
       return value;
     }
   },
-  whitelist: settings.enabledLangs, // i18next < 21
+  // supportedLngs (whitelist was renamed in i18next 21 and is ignored since)
+  // keeps a crafted ?lang= out of the backend loadPath and out of the cookie
   supportedLngs: settings.enabledLangs,
   load: 'languageOnly', // 'es' o 'en', previously: 'all', // es-ES -> es, en-US -> en
   debug: true,
@@ -146,11 +148,8 @@ i18n.use(backend)
         document.location.search = currentUrl.query;
       }
 
-      // Cookie consent banner, only for portals that set their cookie policy page
-      if (settings.cookiePolicyUrl) {
-        mountCookieConsent(settings.cookiePolicyUrl.replace('{lang}', window.i18next.resolvedLanguage || 'en'));
-        console.log('Added cookie consent');
-      }
+      mountCookieConsent(`https://l-a.site/${window.i18next.resolvedLanguage || 'en'}/put-your-cookies-page-here/`);
+      console.log('Added cookie consent');
 
     });
     window.i18next = i18n;

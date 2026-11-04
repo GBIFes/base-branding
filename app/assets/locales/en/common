@@ -70,5 +70,6 @@
   "index.institutions.all": "Show all",
   "index.intro.title": "",
   "index.intro.text": "",
-  "footer.collections": "GBIF.ES collections"
+  "footer.collections": "GBIF.ES collections",
+  "general.brandname": "Atlas of Living Wakanda"
 }

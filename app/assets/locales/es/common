@@ -70,5 +70,6 @@
   "index.institutions.all": "Ver todas",
   "index.intro.title": "",
   "index.intro.text": "",
-  "footer.collections": "Colecciones de GBIF.ES"
+  "footer.collections": "Colecciones de GBIF.ES",
+  "general.brandname": "Atlas de Biodiversidad de Wakanda"
 }

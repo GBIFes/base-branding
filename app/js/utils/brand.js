@@ -97,7 +97,8 @@ export function resolveBrand(settings) {
     headingFont: brand.headingFont || preset.headingFont || font,
     radius,
     logo: brand.logo || defaultLogo,
-    logoWide: Boolean(brand.logoWide)
+    logoWide: Boolean(brand.logoWide),
+    footerLogo: brand.footerLogo || null
   };
 }
 

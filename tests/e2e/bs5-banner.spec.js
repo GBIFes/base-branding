@@ -47,6 +47,15 @@ test('header and footer take the shared tokens and the theme font', async ({ pag
   expect(faces, font).toContain('loaded');
 });
 
+test('the footer shows brand.footerLogo as it is, or the logo on a white box', async ({ page }) => {
+  await openBs5(page);
+  const { logo, footerLogo } = resolveBrand(settings);
+  const img = page.locator('#la-footer .la-footer__brand img');
+  expect(await img.getAttribute('src')).toContain(footerLogo || logo);
+  const bg = await img.evaluate(e => getComputedStyle(e).backgroundColor);
+  expect(bg).toBe(footerLogo ? 'rgba(0, 0, 0, 0)' : 'rgb(255, 255, 255)');
+});
+
 test('on a short page the footer sits at the bottom of the window', async ({ page }) => {
   await openBs5(page);
   await expect.poll(() => page.locator('#la-footer').evaluate(f => Math.round(window.innerHeight - f.getBoundingClientRect().bottom)))

@@ -14,6 +14,7 @@ export default {
   brand: {
     logo: 'images/gbif-es.svg',
     logoWide: true,
+    footerLogo: 'images/gbif-es.svg', // on the footer background as it is, without the white box
     colors: {
       primary: '#0e5a7e', // links, buttons and the big numbers
       primaryDark: '#0a2a3d', // footer background

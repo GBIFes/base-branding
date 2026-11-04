@@ -8,6 +8,8 @@ import jscc from 'rollup-plugin-jscc';
 import eslintPlugin from 'vite-plugin-eslint';
 import { VitePluginRadar } from 'vite-plugin-radar';
 import { globSync } from 'tinyglobby';
+import { resolveBrand, logoSvg, defaultLogo } from './app/js/utils/brand.js';
+import { brandCss, brandTokens, writeBrandAssets, stripFontImports, fontFile } from './scripts/branding.mjs';
 
 const buildTimestamp = Date.now();
 
@@ -65,12 +67,16 @@ const buildTimestamp = Date.now();
 //
 // ─────────────────────────────────────────────────────────────────────────────
 
-const theme = settings.theme;
+// A theme with no app/themes/<theme> (like 'material', discontinued) builds as 'clean'
+const theme = fs.existsSync(`app/themes/${settings.theme}`) ? settings.theme : 'clean';
+if (theme !== settings.theme) console.warn(`settings.theme '${settings.theme}' is not in app/themes: using 'clean'`);
 const cleanBased = [
   'flatly', 'superhero', 'yeti', 'cosmo', 'darkly', 'paper', 'sandstone', 'simplex', 'slate'
 ].includes(theme);
 const themeAssets = cleanBased || theme === 'clean' ? 'clean' : theme;
 const baseUrl = process.env.BASE_BRANDING_URL.replace(/\/+$|^\/+/, '');
+// Logo and footer links from settings.js, already HTML-escaped (scripts/branding.mjs)
+const brand = brandTokens(settings, baseUrl);
 
 const toReplace = [
   /index\.html$/, /errorPage\.html$/, /testPage\.html$/, /testPageCas\.html$/, /testSmall\.html$/,
@@ -117,7 +123,10 @@ const rulesBase = [
   r(toReplaceOthers, '::listsURL::', settings.services.lists.url),
   r(toReplaceOthers, '::spatialURL::', settings.services.spatial.url),
   r(toReplaceOthers, '::casURL::', settings.services.cas.url),
-  r(toReplaceOthers, '::imagesURL::', settings.services.images.url)
+  r(toReplaceOthers, '::imagesURL::', settings.services.images.url),
+  // ::centralServer::, ::loginStatus::, ::loginURL::... are left in banner.html and footer.html for
+  // the ALA apps to fill at runtime; these are ours and the build fills them everywhere
+  ...['brandLogo', 'footerLinks', 'footerSocial', 'langMenu'].map(k => r(toReplaceOthers, `::${k}::`, brand[k]))
 ];
 
 const replacements = Object.fromEntries(
@@ -209,11 +218,14 @@ function injectInitToBody() {
   };
 }
 
+// Theme CSS of banner.html (and of the local pages): css/la-tokens.css, then the Bootswatch
+// bootstrap.min.css of a clean-based theme, then the clean (or your own theme's) CSS on top of it.
 function injectThemeCssLinks(theme) {
-  // Bootswatch themes (cleanBased) are the clean theme plus their own bootstrap.min.css, which
-  // has to come after the clean CSS, as the brunch build concatenated them.
-  const themeDirs = cleanBased ? ['clean', settings.theme] : [theme];
-  const files = themeDirs.flatMap(dir => globSync(`app/themes/${dir}/css/*.css`, { onlyFiles: true }).sort());
+  const files = [
+    'css/la-tokens.css',
+    ...(cleanBased ? globSync(`app/themes/${settings.theme}/css/*.css`, { onlyFiles: true }) : []),
+    ...globSync(`app/themes/${theme}/css/*.css`, { onlyFiles: true }).sort()
+  ];
 
   return {
     name: 'inject-theme-css-links',
@@ -240,6 +252,42 @@ function injectThemeCssLinks(theme) {
           }))
         : [];
       return { html, tags: links };
+    }
+  };
+}
+
+// css/la-tokens.css, fonts/<font>/ and images/logo.svg: generated from settings.js, served by the dev server and
+// written into dist/ by the main build pass
+function brandAssets() {
+  return {
+    name: 'brand-assets',
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        const url = req.url.split('?')[0];
+        if (url === '/css/la-tokens.css') {
+          res.setHeader('Content-Type', 'text/css');
+          return res.end(brandCss(settings));
+        }
+        const brand = resolveBrand(settings);
+        if (url === `/${defaultLogo}` && brand.logo === defaultLogo) {
+          res.setHeader('Content-Type', 'image/svg+xml');
+          return res.end(logoSvg(brand));
+        }
+        const font = url.match(/^\/fonts\/([\w-]+)\/([\w.-]+\.woff2)$/);
+        if (font) {
+          const f = fontFile(font[1], font[2]);
+          if (f) {
+            res.setHeader('Content-Type', 'font/woff2');
+            return res.end(fs.readFileSync(f));
+          }
+        }
+        next();
+      });
+    },
+    closeBundle() {
+      if (process.env.BUILD_INIT) return; // only the main pass
+      writeBrandAssets(settings, path.resolve(__dirname, 'dist'));
+      stripFontImports(path.resolve(__dirname, 'dist/css'));
     }
   };
 }
@@ -345,16 +393,12 @@ const copyCommands = [
   { src: 'app/assets/*', dest: '' },
   { src: `app/themes/${themeAssets}`, dest: 'app/themes/' },
   ...(cleanBased ? [{ src: `app/themes/${theme}`, dest: 'app/themes/' }] : []),
+  // Highcharts, loaded on demand by the chart widgets (app/js/widgets/charts.js)
+  { src: 'node_modules/highcharts/highcharts.js', dest: 'js/highcharts' },
+  { src: 'node_modules/highcharts/modules/drilldown.js', dest: 'js/highcharts' },
   { src: 'app/assets/images/*', dest: 'images' },
   { src: 'app/assets/locales/*', dest: 'locales' }
 ];
-
-if (theme === 'material') {
-  copyCommands.push(
-    { src: 'app/themes/material/material-lite/*', dest: 'material-lite' },
-    { src: 'app/themes/material/custom-bootstrap/*', dest: 'custom-bootstrap' }
-  );
-}
 
 // Second build pass (BUILD_INIT=1): emit app/js/init.js as one standalone
 // classic IIFE bundle at the stable name js/init.js, keeping the main HTML
@@ -389,12 +433,12 @@ const mainConfig = defineConfig({
     viteStaticCopy({ targets: copyCommands }),
     injectInitToBody(),
     injectThemeCssLinks(themeAssets),
+    brandAssets(),
     generateSpatialLayout(),
     emitJqueryFallback(),
     hotReloadSpatial(),
     jscc({ values: { _LOCALES_URL: baseUrl, _DEBUG: 1 } }),
-    // Google Analytics only when the portal sets an id (settings.analytics.googleId)
-    ...(settings.analytics?.googleId ? [VitePluginRadar({ analytics: { id: settings.analytics.googleId } })] : []),
+    VitePluginRadar({ analytics: { id: settings.analytics.googleId } }),
   ],
   build: {
     rollupOptions: {

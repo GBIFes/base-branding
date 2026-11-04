@@ -12,7 +12,9 @@
     "build": "cross-env BASE_BRANDING_URL=https://csic.gbif.es/csic-hub-demo vite build && cross-env BASE_BRANDING_URL=https://csic.gbif.es/csic-hub-demo BUILD_INIT=1 vite build && npm run build:bs5",
     "preview": "BASE_BRANDING_URL=http://localhost:3333 vite preview",
     "build:bs5": "cross-env BASE_BRANDING_URL=https://csic.gbif.es/csic-hub-demo node scripts/build-bs5.mjs",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "screenshots": "node scripts/screenshots.mjs",
+    "demo": "node scripts/demo.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.56.1",
@@ -29,6 +31,17 @@
     "vite-plugin-static-copy": "^3.4.0"
   },
   "dependencies": {
+    "@fontsource-variable/figtree": "^5.3.0",
+    "@fontsource-variable/fraunces": "^5.3.0",
+    "@fontsource-variable/ibm-plex-sans": "^5.3.0",
+    "@fontsource-variable/inter": "^5.3.0",
+    "@fontsource-variable/manrope": "^5.3.0",
+    "@fontsource-variable/nunito": "^5.3.0",
+    "@fontsource-variable/outfit": "^5.3.0",
+    "@fontsource-variable/plus-jakarta-sans": "^5.3.0",
+    "@fontsource-variable/sora": "^5.3.0",
+    "@fontsource-variable/space-grotesk": "^5.3.0",
+    "@fontsource-variable/work-sans": "^5.3.0",
     "bent": "^7.3.12",
     "countup.js": "^2.8.0",
     "domurl": "^2.3.4",

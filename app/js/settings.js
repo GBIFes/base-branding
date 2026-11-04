@@ -13,6 +13,7 @@ export default {
   // paper, a serif for the titles
   brand: {
     logo: 'images/gbif-es.png',
+    logoWide: true,
     colors: {
       primary: '#2f6b3a', // links, buttons and the big numbers
       primaryDark: '#1f3d26', // footer background

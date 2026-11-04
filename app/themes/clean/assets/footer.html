@@ -18,18 +18,18 @@
       <ul>
         <li><a data-i18n="nav.biocache" href="::biocacheURL::"></a></li>
         <li><a data-i18n="nav.species" href="::bieURL::"></a></li>
-        <li><a data-i18n="nav.collectory" href="::collectoryURL::"></a></li>
-        <li><a data-i18n="nav.datasets" href="::datasetsURL::"></a></li>
-        <li><a data-i18n="nav.spatial" href="::spatialURL::"></a></li>
+        <li><a data-i18n="nav.regions" href="::regionsURL::"></a></li>
+        <li><a data-i18n="nav.your-area" href="::biocacheURL::/explore/your-area/"></a></li>
       </ul>
     </nav>
     <nav class="la-footer__col" aria-labelledby="la-footer-tools">
       <h2 id="la-footer-tools" data-i18n="footer.tools"></h2>
       <ul>
+        <li><a data-i18n="footer.collections" href="::collectoryURL::"></a></li>
+        <li><a data-i18n="nav.datasets" href="::datasetsURL::"></a></li>
         <li><a data-i18n="nav.species-lists" href="::listsURL::"></a></li>
-        <li><a data-i18n="nav.regions" href="::regionsURL::"></a></li>
+        <li><a data-i18n="nav.spatial" href="::spatialURL::"></a></li>
         <li><a data-i18n="nav.images" href="::imagesURL::"></a></li>
-        <li><a data-i18n="nav.your-area" href="::biocacheURL::/explore/your-area/"></a></li>
       </ul>
     </nav>
     <nav class="la-footer__col" aria-labelledby="la-footer-about">
@@ -40,7 +40,7 @@
     </nav>
   </div>
   <div class="la-footer__bar">
-    <span>&copy; 2020-<span id="footer-copyright"><script>
+    <span>&copy; <span id="footer-copyright"><script>
       document.getElementById("footer-copyright").appendChild(document.createTextNode(new Date().getFullYear()));
     </script></span> <span data-i18n="general.orgfullname"></span></span>
     <span><span data-i18n="footer.powered"></span> <a href="https://living-atlases.gbif.org">Living Atlases</a></span>

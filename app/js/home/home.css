@@ -149,3 +149,10 @@
   .la-hero__slide, .la-card, .la-card img, .la-stat { transition: none; }
   .la-hero__slide { transform: none; }
 }
+
+/* Hubs: an intro of the hub under the numbers (index.intro.*), left out when it has no text */
+.la-intro:has(h2:empty) { display: none; }
+.la-intro { max-width: 820px; }
+.la-intro__text { font-size: 18px; line-height: 1.65; color: var(--la-ink); }
+.la-intro__text p { margin: 0 0 14px; }
+.la-intro__text a { color: var(--la-primary); text-decoration: underline; text-underline-offset: 2px; }

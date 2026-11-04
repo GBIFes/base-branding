@@ -65,7 +65,7 @@ Everything is in `app/js/settings.js`; the texts are in the locales (`app/assets
 | Cards and partners | `home.cards` (`i18n` key, `image`, `url`), `home.partners` (`name`, `logo`, `url`) |
 | Home widgets | `homeWidgets`: `stats`, `taxoChart`, `instChart`, `institutions` (true/false, all true by default); `dataHub`: `null` for the whole portal or a data hub uid; `dataHubToFlag` and `flagBadge`; `institutionsExclude`, `institutionsShow`; `chartColors` |
 | Footer | `footer.links` (last column, `i18n` key and `url`), `footer.social` (`name`, `url`) |
-| Texts | `general.orgfullname`, `index.*`, `footer.*` and `nav.*` keys of the locales |
+| Texts | `general.orgfullname` (the home title), `general.brandname` (next to the logo, a shorter one if the full name is long), `index.*`, `footer.*` and `nav.*` keys of the locales |
 
 Every key of `brand` is optional: what you leave out comes from the theme. Text colours on the header, buttons and accent are picked for contrast (white or dark). The sample photos come from GBIF records, with their licences in `app/assets/images/CREDITS.md`; `npm run demo` builds every theme into `demo/` to compare them (it has a colour picker to try another primary). URLs can use `{biocache}`, `{collectory}`, `{spatial}`... (any of `services`) and `{central}` (`mainLAUrl`); images are paths of this branding (`images/x.png`) or absolute URLs.
 

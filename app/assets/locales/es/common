@@ -82,5 +82,6 @@
   "footer.links.ahim": "AHIM",
   "footer.links.legal": "Aviso legal",
   "footer.links.privacy": "Política de privacidad",
-  "footer.collections": "Colecciones de GBIF.ES"
+  "footer.collections": "Colecciones de GBIF.ES",
+  "general.brandname": "Colecciones botánicas"
 }

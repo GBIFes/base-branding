@@ -206,6 +206,24 @@ test.describe('institutions', () => {
   });
 });
 
+test.describe('data hub', () => {
+  test.skip(!settings.dataHub, 'settings.dataHub is not set: the widgets count the whole portal');
+
+  test('the charts and institutions ask for the data hub only, and its flagged members get the badge', async ({ page }) => {
+    const asked = [];
+    page.on('request', r => asked.push(decodeURIComponent(r.url())));
+    await openHome(page);
+    await expect(page.locator('#accordion-home-institutions .la-entity')).toHaveCount(30);
+    await expect(slices(page, 'taxo-container').first()).toBeVisible();
+    expect(asked.some(u => u.includes(`/ws/dataHub/${settings.dataHub}`))).toBe(true);
+    for (const u of asked.filter(x => x.includes('/breakdown.json') || x.includes('/occurrence/facets'))) {
+      expect(u).toContain(`data_hub_uid:${settings.dataHub}`);
+    }
+    const badges = page.locator('#accordion-home-institutions .la-entity__badge');
+    await expect(badges).toHaveCount(settings.dataHubToFlag ? 3 : 0);
+  });
+});
+
 test('pages without chart containers never download Highcharts', async ({ page }) => {
   expect(readDist('js/init.js')).not.toContain('Highcharts JS v');
   const requested = [];

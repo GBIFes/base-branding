@@ -4,7 +4,13 @@
     "**/*.md",
     "dist/**",
     "screenshots/**",
-    ".gitignore"
+    ".gitignore",
+    {
+      "match": [
+        "scripts/hero/*"
+      ],
+      "run": "node --check scripts/hero/hero-candidates.mjs && python3 -m py_compile scripts/hero/*.py"
+    }
   ],
   "rules": [
     {

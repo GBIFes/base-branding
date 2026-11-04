@@ -150,13 +150,13 @@
   .la-hero__slide { transform: none; }
 }
 
-/* Hubs: an intro of the hub under the numbers (index.intro.*), left out when it has no text */
+/* An intro under the numbers (index.intro.*), left out when the locale has no text for it */
 .la-intro:has(h2:empty) { display: none; }
 .la-intro { max-width: 820px; }
 .la-intro__text { font-size: 18px; line-height: 1.65; color: var(--la-ink); }
 .la-intro__text p { margin: 0 0 14px; }
 .la-intro__text a { color: var(--la-primary); text-decoration: underline; text-underline-offset: 2px; }
-/* Hubs: partner logos of very different shapes, none much wider than the rest */
+/* Partner logos of very different shapes, none much wider than the rest */
 .la-partners__logos img { max-width: 170px; object-fit: contain; }
 @media (max-width: 860px) {
   .la-home .la-intro h2 { font-size: 27px; }

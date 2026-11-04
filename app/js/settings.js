@@ -15,6 +15,7 @@ export default {
   brand: {
     logo: 'images/partners/csic.svg',
     logoWide: true,
+    footerLogo: 'images/csic-white.svg', // on the footer background as it is, without the white box
     colors: {
       primary: '#ae0e16', // links, buttons and the big numbers
       primaryDark: '#2b2b2b', // footer background

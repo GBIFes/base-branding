@@ -119,10 +119,13 @@ export function langMenu(settings, { bs5 = false } = {}) {
 
 // ::token:: values of the header and footer fragments, the same in both builds
 export function brandTokens(settings, baseUrl) {
-  const { logo } = resolveBrand(settings);
+  const { logo, footerLogo } = resolveBrand(settings);
   const footer = footerOf(settings);
   return {
     brandLogo: escapeHtml(assetUrl(baseUrl, logo)),
+    // brand.footerLogo: a version of the logo for the footer background, shown as it is (no white box)
+    footerLogo: escapeHtml(assetUrl(baseUrl, footerLogo || logo)),
+    footerLogoClass: footerLogo ? 'la-brand__logo la-brand__logo--plain' : 'la-brand__logo',
     langMenu: langMenu(settings),
     footerLinks: (footer.links || []).map(l => link(settings, l)).join('\n          '),
     footerSocial: (footer.social || []).map(s =>

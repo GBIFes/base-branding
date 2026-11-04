@@ -156,3 +156,5 @@
 .la-intro__text { font-size: 18px; line-height: 1.65; color: var(--la-ink); }
 .la-intro__text p { margin: 0 0 14px; }
 .la-intro__text a { color: var(--la-primary); text-decoration: underline; text-underline-offset: 2px; }
+/* Hubs: partner logos of very different shapes, none much wider than the rest */
+.la-partners__logos img { max-width: 170px; object-fit: contain; }

@@ -26,9 +26,11 @@ test('the Bootstrap 5 header is translated and its dropdowns open', async ({ pag
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
   await openBs5(page);
-  await expect(page.locator('#la-header [data-i18n="nav.collectory"]')).not.toBeEmpty();
-  await page.locator('#dropdown-lang .dropdown-toggle').click();
-  await expect(page.locator('#dropdown-lang .dropdown-menu')).toBeVisible();
+  await expect(page.locator('#la-header [data-i18n="nav.biocache"]').first()).not.toBeEmpty();
+  // The language menu, or with a single language (no menu) the account one
+  const menu = page.locator(settings.enabledLangs.length > 1 ? '#dropdown-lang' : '#la-header .la-account');
+  await menu.locator('.dropdown-toggle').click();
+  await expect(menu.locator('.dropdown-menu')).toBeVisible();
   expect(errors).toEqual([]);
 });
 

@@ -42,13 +42,8 @@
               <svg class="la-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
             </a>
           </li>
-          <!-- Language selector: remove it if you don't want a multilang site -->
-          <li id="dropdown-lang" class="nav-item dropdown">
-            <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Language"><i class="fa-solid fa-globe" aria-hidden="true"></i></a>
-            <ul class="locale-switcher dropdown-menu dropdown-menu-end dropdown-lang-menu">
-::LOCALE_LINKS::
-            </ul>
-          </li>
+          <!-- Language selector, from settings.enabledLangs (none with a single language) -->
+          ::langMenu::
           <!-- Account: the menu comes before its toggle so the toggle label can follow {{loginStatus}} in CSS -->
           <li class="nav-item dropdown la-account">
             <ul class="dropdown-menu dropdown-menu-end account {{loginStatus}}">

@@ -103,6 +103,7 @@ test.describe('hero', () => {
 
   test('the hub intro shows its text, and is left out when the locale has none', async ({ page }) => {
     await openHome(page);
+    await page.waitForFunction(() => window.i18next && window.i18next.resolvedLanguage);
     const lang = await page.evaluate(() => window.i18next.resolvedLanguage);
     const texts = JSON.parse(fs.readFileSync(path.join(root, `app/assets/locales/${lang}/common`), 'utf8'));
     const intro = page.locator('#la-intro');

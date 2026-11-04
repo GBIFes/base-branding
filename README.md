@@ -47,16 +47,68 @@ Other strategy is to have an independent CMS theme with their own js/css and a s
 
 ## Styling
 
-ALA uses Bootstrap version 3 in most of their modules.
+ALA uses Bootstrap 3 in most of their modules and Bootstrap 5 in the newer ones. This branding builds both (`npm run build`), and both share the same look: a thin white header with the logo and name on the left and the menu, search, language and login on the right, and a footer of several columns. The home page has a full-bleed hero carousel with image credits, big numbers, cards, optional charts and a strip of partners.
 
-This branding has currently several themes in `app/themes`. One is a `clean` Boostrap 3 theme that you can easy adapt to your site needs. This is useful when you already have a css/html style (for instance of your blog or main site) that you want to integrate with the new LA portal. Based in this clean BS3 theme there are other customized versions using many of the https://bootswatch.com/3/ themes.
+Themes live in `app/themes`. `clean` is the default and the base of the [Bootswatch 3](https://bootswatch.com/3/) themes (`cosmo`, `darkly`, `flatly`, `paper`, `sandstone`, `simplex`, `slate`, `superhero`, `yeti`): each one loads its `bootstrap.min.css` and has its own look: brand and navbar colours, a font and a corner radius (`presets` in `app/js/utils/brand.js`). Pick one with `theme` in `app/js/settings.js`. The Bootstrap 5 build has no Bootswatch: it takes the colours of the theme you pick.
 
-Additionally we have a material-bootstrap experimental theme in `app/themes/material` as a demostration of how to do a different look&feel to a LA portal with other js/css libs. This `material` theme uses:
-- Material Design Lite https://getmdl.io/ with a custom theme that you can https://getmdl.io/customize/index.html change, download and put instead of `app/themes/material/css/material.min.css`.
-- And experimentally also [Material Bootstrap Design](https://github.com/FezVrasta/bootstrap-material-design) to have similar style in the ALA modules.
-If you only want to do minor style changes, have a look to `app/themes/material/css/material-custom-styles.css`.
+The experimental `material` theme is discontinued: a `theme: 'material'` now builds as `clean`.
 
-This styling is not the most important work of this `base-branding`, but instead the integration with ALA and the vite configuration that gives you the possibility to use modern javascript code and modern libraries or use `i18next`, for example.
+## Customize the look
+
+Everything is in `app/js/settings.js`; the texts are in the locales (`app/assets/locales/<lang>/common`). A fork usually only touches these two files and its images.
+
+| What | Where |
+|---|---|
+| Colours, fonts, logo | `brand`: `colors.primary` (links, buttons), `colors.primaryDark` (footer), `colors.accent` (search button), `colors.highlight` (big numbers, card links; primary by default), `colors.headerBg` (header; its text and accent colours follow from it, or set `headerInk` and `headerAccent`), and `ink`, `muted`, `line`, `surface`, `page` (text and page colours); `font` and `headingFont`; `radius` (px); `logo` |
+| Hero | `home.hero.slides`: `image`, `position` (CSS background-position, for narrow screens) and its credits (`species`, `institution`, `author`, `license`, `licenseUrl`, `recordUrl`). For sharp images on every screen, `image` can have a `{w}` with the `widths` it comes in and its `ratio` (width / height), plus a `narrow` cut for phones (`image`, `widths`, `ratio`): each visitor gets the smallest one that covers the hero. `home.hero.search` (`url`, `param`, or `false`); `home.hero.buttons`; `home.hero.interval` |
+| Languages | `enabledLangs`: the header language menu lists these, and is left out with a single language |
+| Cards and partners | `home.cards` (`i18n` key, `image`, `url`), `home.partners` (`name`, `logo`, `url`) |
+| Home widgets | `homeWidgets`: `stats`, `taxoChart`, `instChart`, `institutions` (true/false, all true by default); `dataHub`: `null` for the whole portal or a data hub uid; `dataHubToFlag` and `flagBadge`; `institutionsExclude`, `institutionsShow`; `chartColors` |
+| Footer | `footer.links` (last column, `i18n` key and `url`), `footer.social` (`name`, `url`) |
+| Texts | `general.orgfullname`, `index.*`, `footer.*` and `nav.*` keys of the locales |
+
+Every key of `brand` is optional: what you leave out comes from the theme. Text colours on the header, buttons and accent are picked for contrast (white or dark). The sample photos come from GBIF records, with their licences in `app/assets/images/CREDITS.md`; `npm run demo` builds every theme into `demo/` to compare them (it has a colour picker to try another primary). URLs can use `{biocache}`, `{collectory}`, `{spatial}`... (any of `services`) and `{central}` (`mainLAUrl`); images are paths of this branding (`images/x.png`) or absolute URLs.
+
+How it works:
+- `scripts/branding.mjs` writes `css/la-tokens.css` from `settings.brand`: the `--la-*` CSS custom properties that the header, footer, home and widgets use, in both builds. Use them in your own CSS too (`color: var(--la-primary)`). The same file gives the Bootstrap buttons of the module pages (`btn-primary`, `btn-default`/`btn-secondary`, the outline ones, pagination) the brand colours in `clean` and in the Bootstrap 5 build, whose base CSS has the ALA ones; the Bootswatch themes keep their own.
+- The header and footer CSS (`app/themes/clean/css/la-brand.css`, `la-header-bs3.css` and `app/bs5/branding-bs5.css`) reaches every page of every module and CAS, so all of it stays under the `la-*` classes, and sizes are in px because the modules set different `html { font-size }`.
+- The footer is one file for both builds: `app/themes/clean/assets/footer.html`. On pages shorter than the window, `app/js/footer-bottom.js` moves it down to the bottom (by its top margin only: no `html`/`body` CSS, which would fight the module layouts). The Bootstrap 3 header is `app/themes/clean/assets/banner.html`, the Bootstrap 5 one `app/bs5/banner.mustache`: keep their menus in step.
+- The home is `app/themes/clean/assets/indexBody.html`, filled by `app/js/home/` (hero carousel, cards, partners) and `app/js/widgets/` (numbers, charts, institutions). Credits and names from the APIs are written as text, never as HTML.
+- The charts load Highcharts 11 from `js/highcharts/` only when they draw, so a portal without them doesn't download it. Highcharts stays on 11.x: 12 breaks the drilldown (`tests/e2e/home.spec.js` checks it).
+
+### Optional home widgets
+
+All four are on by default; set a key of `homeWidgets` to `false` to turn one off. Each one draws only when its container is on the page (`indexBody.html` has all of them; module pages have none, so they do nothing there). The section around the charts (`.la-widgets`) stays hidden until one of them draws.
+
+| `homeWidgets` key | Container | What it shows | Reads |
+|---|---|---|---|
+| `stats` | `#stats_occurrences`, `#stats_datasets`, `#stats_species`, `#stats_institutions` | Big numbers, counting up | biocache `occurrences/search?pageSize=0` (records, species); collectory `ws/dataResource/count` and `ws/institution/count`, or `ws/dataHub/<uid>` with a data hub |
+| `taxoChart` | `#taxo-container` | Pie of records by kingdom; a click drills down to species, and a button opens the records of that level | biocache `breakdown.json` |
+| `instChart` | `#inst-container` | Pie of records by institution; a click opens their records | biocache `occurrence/facets` (`institution_uid`) |
+| `institutions` | `#accordion-home-institutions` | Institution cards; opening one lists its collections and data resources | collectory `ws/institution`, `ws/institution/<uid>`, `ws/collection/<uid>` |
+
+- `dataHub`: `null` counts the whole portal; a data hub uid (`'dh1'`) limits every widget to that hub (`q=data_hub_uid:<uid>`, and only its member institutions).
+- `dataHubToFlag` and `flagBadge` (`image`, `title`, `url`): institutions of that other hub get a badge in the institution cards (a text pill when there is no `image`).
+- `institutionsExclude`: institution uids left out of the cards. `institutionsShow` (12 by default): cards shown before a "show all" button; a longer list also gets a filter by name.
+- `chartColors` (`taxo`, `inst`): base colour of each pie, `#hex` or an index of the Highcharts palette; by default the brand primary and accent.
+- Chart texts are the `index.stats.*` and `index.charts.*` keys of the locales; names from the APIs are written as text.
+- Highcharts 11 is copied to `js/highcharts/` and loaded only when a chart draws. To put a widget in a page of your own, add its container (and a `.la-widgets` section if you want it hidden until it draws): `js/init.js` does the rest.
+
+### Fonts
+
+Each theme brings its fonts with the branding, no external font service: `clean` Inter, `cosmo` Space Grotesk, `darkly` Outfit, `flatly` Plus Jakarta Sans, `paper` Nunito, `sandstone` Work Sans with Fraunces titles, `simplex` Manrope, `slate` IBM Plex Sans, `superhero` Sora and `yeti` Figtree. A font named in `brand.font` or `brand.headingFont` is bundled when its `@fontsource-variable/<name>` package is installed (`npm install @fontsource-variable/<name>`): the build copies only the fonts of the theme to `fonts/<name>/`. The module pages load them from the branding host, another origin, so the server must send `Access-Control-Allow-Origin` for the fonts, as it already must for the Bootstrap 5 Font Awesome. With nginx:
+
+```
+location ~* \.(woff2?|ttf|otf|eot)$ { add_header Access-Control-Allow-Origin "*"; }
+```
+
+Without it the pages fall back to the system font. A font without such a package must be loaded by your pages.
+
+No page asks a font service for anything: the Bootswatch `bootstrap.min.css` files have their Google Fonts `@import` removed, so their body text uses the theme's fallback fonts (Helvetica, Arial...) while the header, footer and home use the theme font. `tests/e2e/layout.spec.js` checks it.
+
+### Adopting it in a fork
+
+Merge this repository and keep your `app/js/settings.js` and locales, adding the new keys (`brand`, `home`, `homeWidgets`, `dataHub`, `dataHubToFlag`, `flagBadge`, `institutionsExclude`, `chartColors`, `footer`) and the `index.*`/`footer.*` texts. The files involved are `app/themes/clean/{assets,css}/`, `app/bs5/`, `app/js/{home,widgets,utils}/`, `app/js/init.js`, `index.html`, `scripts/branding.mjs`, `scripts/build-bs5.mjs` and `vite.config.js`. `app/js/stats.js` moved to `app/js/widgets/stats.js`; the earlier `hub-charts.js`, `taxo-graph.js`, `inst-graph.js` and `load-inst.js` of the data hub brandings are `app/js/widgets/{charts,taxo-chart,inst-chart,institutions}.js`, configured with the settings above instead of code.
 
 ## Structure
 
@@ -66,18 +118,15 @@ This styling is not the most important work of this `base-branding`, but instead
 │   │   ├── fonts        # etc
 │   │   ├── locales
 │   │   └── images
+│   ├── bs5              # Bootstrap 5 header, assets and css
 │   ├── css              # put your css here
-│   ├── js               # put your js code here
+│   ├── js               # put your js code here (settings.js, home/, widgets/)
 │   └── themes
-│       ├── clean        # clean BS3 theme that you can select in settings.js
+│       ├── clean        # clean BS3 theme, base of the Bootswatch ones
 │       │   ├── assets
 │       │   ├── js
 │       │   └── css
-│       │   (...)        # add your custom theme here
-│       └── material     # material-BS3 theme that you can select in settings.js
-│           ├── assets
-│           ├── css
-│           └── js
+│       └── (...)        # add your custom theme here
 ├──commonui-bs3-2019     # ALA branding as submodule
 │
 ├──node-modules          # 'yarn add module', to install
@@ -137,6 +186,8 @@ Test with:
 - http://localhost:3333/
 - http://localhost:3333/testPage.html
 - http://localhost:3333/errorPage.html
+
+`npm run test:e2e` runs the Playwright tests against `dist/` (build first). `npm run screenshots [theme...]` builds each theme and refreshes `screenshots/` (then `npm run build` again).
 
 ## Deployment and ALA configuration
 
@@ -235,45 +286,25 @@ Pull Request welcome!
 
 ## Screenshots
 
-### Material theme
+### Clean and Bootswatch themes
 
-Home page with stats:
+Home page (Bootstrap 3), `clean`, `flatly` and `darkly`:
 
-![](https://raw.github.com/living-atlases/base-branding/master/la-base-index.png)
+![](screenshots/bs3/clean.png)
 
-Multilingual menu selection integrated with `grails` i18n:
+![](screenshots/bs3/flatly.png)
 
-![](https://raw.github.com/living-atlases/base-branding/master/screenshots/material/collectory-i18n.png)
+![](screenshots/bs3/darkly.png)
 
-`CAS` Authentication links in drawer (and other configurable links):
+A Bootstrap 5 module page with the same header and footer, with the `clean`, `flatly` and `darkly` colours:
 
-![](https://raw.github.com/living-atlases/base-branding/master/screenshots/material/drawer.png)
+![](screenshots/bs5/clean.png)
 
-ALA Species autocompletion integrated and sticky footer:
+![](screenshots/bs5/flatly.png)
 
-![](https://raw.github.com/living-atlases/base-branding/master/screenshots/material/sticky-footer-autocomplete.png)
+![](screenshots/bs5/darkly.png)
 
-Error page:
-
-![](https://raw.github.com/living-atlases/base-branding/master/screenshots/material/error-page.png)
-
-### Clean theme
-
-Home page with stats:
-
-![](https://raw.github.com/living-atlases/base-branding/master/screenshots/clean/index.png)
-
-`CAS` Authentication links in dropdown (and other configurable links):
-
-![](https://raw.github.com/living-atlases/base-branding/master/screenshots/clean/menu-auth-and-links.png)
-
-ALA Species autocompletion integrated and sticky footer:
-
-![](https://raw.github.com/living-atlases/base-branding/master/screenshots/clean/autocomplete.png)
-
-Error page:
-
-![](https://raw.github.com/living-atlases/base-branding/master/screenshots/clean/error.png)
+Thumbnails of every theme: `screenshots/<theme>.png`.
 
 ## Error pages
 

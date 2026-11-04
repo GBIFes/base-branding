@@ -42,7 +42,8 @@ const i18nOpts = {
       return value;
     }
   },
-  whitelist: settings.enabledLangs, // i18next < 21
+  // supportedLngs (whitelist was renamed in i18next 21 and is ignored since)
+  // keeps a crafted ?lang= out of the backend loadPath and out of the cookie
   supportedLngs: settings.enabledLangs,
   load: 'languageOnly', // 'es' o 'en', previously: 'all', // es-ES -> es, en-US -> en
   debug: true,

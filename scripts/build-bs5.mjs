@@ -10,6 +10,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import settings from '../app/js/settings.js';
 import { buildCommonui } from './build-commonui.mjs';
+import { brandTokens, langMenu, writeBrandAssets, stripFontImports } from './branding.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const out = path.join(root, 'dist', 'bs5');
@@ -25,16 +26,16 @@ for (const d of ['css', 'js', 'fonts']) {
   fs.cpSync(path.join(bs5Build, d), path.join(out, d), { recursive: true });
 }
 fs.copyFileSync(path.join(root, 'app/bs5/branding-bs5.css'), path.join(out, 'css/branding-bs5.css'));
+// The look shared with the Bootstrap 3 build: tokens and Inter from settings.brand, header and footer CSS
+writeBrandAssets(settings, out, { bs5: true });
+stripFontImports(path.join(out, 'css'));
+fs.copyFileSync(path.join(root, 'app/themes/clean/css/la-brand.css'), path.join(out, 'css/la-brand.css'));
 // Apache: .mustache has no content type by default and the app (Java URLConnection) refuses it
 fs.copyFileSync(path.join(root, 'app/bs5/htaccess'), path.join(out, '.htaccess'));
 
 // 3. Templates: ::token:: are build time values, {{token}} are rendered by the app at runtime
-const localeNames = { en: 'English', es: 'Español', zh: '简体中文', sw: 'Swahili', pt: 'Português', fr: 'Français' };
-const localeLinks = settings.enabledLangs.map(l =>
-  `              <li class="locale-link" data-locale="${l}"><a class="dropdown-item ${l}-locale-link" href="#"><span class="lang_link_${l}">${localeNames[l] || l}</span></a></li>`
-).join('\n');
 const tokens = {
-  buildTimestamp, baseUrl, LOCALE_LINKS: localeLinks,
+  buildTimestamp, baseUrl,
   centralServer: settings.mainLAUrl,
   collectoryURL: settings.services.collectory.url,
   datasetsURL: `${settings.services.collectory.url}/datasets`,
@@ -44,10 +45,14 @@ const tokens = {
   listsURL: settings.services.lists.url,
   spatialURL: settings.services.spatial.url,
   casURL: settings.services.cas.url,
-  imagesURL: settings.services.images.url
+  imagesURL: settings.services.images.url,
+  ...brandTokens(settings, baseUrl),
+  langMenu: langMenu(settings, { bs5: true })
 };
+// The footer is the Bootstrap 3 one: its markup does not depend on Bootstrap
+const sources = { footer: 'app/themes/clean/assets/footer.html' };
 for (const name of ['assets', 'banner', 'footer', 'head']) {
-  let txt = fs.readFileSync(path.join(root, 'app/bs5', `${name}.mustache`), 'utf8');
+  let txt = fs.readFileSync(path.join(root, sources[name] || `app/bs5/${name}.mustache`), 'utf8');
   txt = txt.replace(/::(\w+)::/g, (m, k) => (k in tokens ? tokens[k] : m));
   const left = txt.match(/::\w+::/g);
   if (left) throw new Error(`${name}.mustache: unresolved tokens ${left.join(', ')}`);

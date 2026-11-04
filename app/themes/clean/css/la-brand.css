@@ -98,3 +98,8 @@
 @media (max-width: 480px) {
   .la-footer__in { grid-template-columns: 1fr; }
 }
+
+/* A long hub name next to a wide logo still fits a phone header */
+@media (max-width: 480px) {
+  .la-header .la-brand { font-size: 15px; }
+}

@@ -12,7 +12,7 @@ export default {
   // Look of the header, footer and home in both builds (Bootstrap 3 and 5): herbarium green on
   // paper, a serif for the titles
   brand: {
-    logo: 'images/gbif-es.png',
+    logo: 'images/gbif-es.svg',
     logoWide: true,
     colors: {
       primary: '#2f6b3a', // links, buttons and the big numbers
@@ -78,8 +78,7 @@ export default {
     partners: [
       { name: 'AHIM', logo: 'images/partners/ahim.png', url: 'https://ahim.org/' },
       { name: 'CSIC', logo: 'images/partners/csic.svg', url: 'https://www.csic.es/' },
-      { name: 'Ministerio de Ciencia, Innovación y Universidades', logo: 'images/partners/mciu.svg', url: 'https://www.ciencia.gob.es/' },
-      { name: 'GBIF', logo: 'images/partners/gbif.svg', url: 'https://www.gbif.org/' }
+      { name: 'Ministerio de Ciencia, Innovación y Universidades', logo: 'images/partners/mciu.png', url: 'https://www.ciencia.gob.es/' }
     ]
   },
   homeWidgets: { stats: true, taxoChart: true, instChart: true, institutions: true },
